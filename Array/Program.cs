@@ -5,35 +5,13 @@ namespace Array;
 
 internal class Program
 {
-	public static int RemoveDuplicates(int[] nums)
+	public static int RemoveElement(int[] nums, int val)
 	{
-		// loop over array and create another array insert in the new one
-
-		var uniqueDic = new Dictionary<int, int>();
+		int k = 0;
 
 		for (int i = 0; i < nums.Length; i++)
 		{
-			uniqueDic.TryAdd(nums[i], nums[i]);
-		}
-		var uniqueArray = new int[uniqueDic.Count];
-
-		for (int j = 0; j < uniqueDic.Count; j++)
-		{
-			nums[j] = uniqueDic.ElementAt(j).Value;
-		}
-
-		return uniqueArray.Length;
-	}
-	public static int RemoveDuplicatesOptimize(int[] nums)
-	{
-		if (nums.Length == 0)
-			return 0;
-
-		int k = 1;  
-
-		for (int i = 1; i < nums.Length; i++)
-		{
-			if (nums[i] != nums[i - 1])
+			if (nums[i] != val)
 			{
 				nums[k] = nums[i];
 				k++;
@@ -45,9 +23,10 @@ internal class Program
 
 	static void Main(string[] args)
 	{
-		var input = new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 };
+		var nums = new int[] { 0, 1, 2, 2, 3, 0, 4, 2 };
+		var val = 2;
 
-		var result = RemoveDuplicatesOptimize(input);
+		var result = RemoveElement(nums, val);
 
 		Console.WriteLine(result);
 	}
