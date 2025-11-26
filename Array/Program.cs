@@ -2,16 +2,43 @@
 
 internal class Program
 {
-	
+    public static int[] PlusOne(int[] digits)
+    {
+        var length = digits.Length;
 
-	static void Main(string[] args)
-	{
-		//var nums = new int[] { -1, 0, 1, 2, -1, -4 };
-		////var nums = new int[] { -4, -1, -1, 0, 1, 2 };
+        var right = length - 1;
 
-		//var result = ThreeSum(nums);
 
-		//Console.WriteLine(result);
-	}
+        while (right >= 0 && digits[right] == 9)
+        {
+            digits[right] = 0;
+            right--;
+        }
+        if (right < 0)
+        {
+
+            var newDigits = new int[length + 1];
+
+            newDigits[0] = 1;
+
+            return newDigits;
+        }
+
+        else
+        {
+            digits[right]++;
+            return digits;
+        }
+
+    }
+
+    static void Main(string[] args)
+    {
+        var nums = new int[] { 9, 9, 9 };
+
+        var result = PlusOne(nums);
+
+        Console.WriteLine(result);
+    }
 }
 
