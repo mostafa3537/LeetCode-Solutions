@@ -1,4 +1,4 @@
-﻿namespace Array;
+﻿namespace Arrayprob;
 
 internal class ThreeSum
 {

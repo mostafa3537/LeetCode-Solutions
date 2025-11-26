@@ -1,42 +1,48 @@
-﻿namespace Array;
+﻿namespace Arrayprob;
 
 internal class Program
 {
-    public static int[] PlusOne(int[] digits)
+
+    public static IList<IList<int>> CombinationSum(int[] candidates, int target)
     {
-        var length = digits.Length;
+        Array.Sort(candidates);
+        var result = new List<IList<int>>();
 
-        var right = length - 1;
+        var stack = new Stack<(List<int> combo, int sum, int index)>();
+        stack.Push((new List<int>(), 0, 0));
 
-
-        while (right >= 0 && digits[right] == 9)
+        while (stack.Count > 0)
         {
-            digits[right] = 0;
-            right--;
+            var (combo, sum, index) = stack.Pop();
+
+            if (sum == target)
+            {
+                result.Add(combo);
+                continue;
+            }
+
+            for (int i = index; i < candidates.Length; i++)
+            {
+                int num = candidates[i];
+                int newSum = sum + num;
+
+                if (newSum > target)
+                    break;
+
+                var newCombo = new List<int>(combo) { num };
+                stack.Push((newCombo, newSum, i));
+            }
         }
-        if (right < 0)
-        {
 
-            var newDigits = new int[length + 1];
-
-            newDigits[0] = 1;
-
-            return newDigits;
-        }
-
-        else
-        {
-            digits[right]++;
-            return digits;
-        }
-
+        return result;
     }
+
 
     static void Main(string[] args)
     {
-        var nums = new int[] { 9, 9, 9 };
-
-        var result = PlusOne(nums);
+        var nums = new int[] { 2, 3, 6, 7 };
+        var target = 7;
+        var result = CombinationSum(nums, target);
 
         Console.WriteLine(result);
     }
