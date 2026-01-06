@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrayprob
+namespace ArrayProblems
 {
     internal class PlusOne
     {
