@@ -1,8 +1,6 @@
-﻿using System.Linq;
+﻿namespace Array;
 
-namespace Arrayprob;
-
-internal class Program
+internal class ContainsNearbyDuplicateProblem
 {
 	public static bool ContainsNearbyDuplicate(int[] nums, int k)
 	{
@@ -30,14 +28,4 @@ internal class Program
 
 		return result;
 	}
-	static void Main(string[] args)
-	{
-		var nums = new int[] { 1, 2, 3, 1 };
-		var target = 3;
-
-		var result = ContainsNearbyDuplicate(nums, target);
-
-		Console.WriteLine(result);
-	}
 }
-
