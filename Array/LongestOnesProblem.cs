@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ArrayProblems;
 
-internal class Program
+internal class LongestOnesProblem
 {
     public static int LongestOnes(int[] nums, int k)
     {
@@ -28,21 +32,11 @@ internal class Program
                 left++;
 
             }
-            int maxLenght = right - left + 1 ;
+            int maxLenght = right - left + 1;
 
             result = Math.Max(result, maxLenght);
 
         }
         return result;
     }
-    static void Main(string[] args)
-    {
-        var nums = new int[] { 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 };
-        var target = 2;
-
-        var result = LongestOnes(nums, target);
-
-        Console.WriteLine(result);
-    }
 }
-
