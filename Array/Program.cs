@@ -1,46 +1,42 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ArrayProblems;
 
 internal class Program
 {
-    public static int LongestOnes(int[] nums, int k)
+    public static int LengthOfLongestSubstring(string s)
     {
         var result = 0;
         var left = 0;
+        var set = new HashSet<char>();
 
-        var zeros = 0;
-        for (int right = 0; right < nums.Length; right++)
+        for (int right = 0; right < s.Length; right++)
         {
+            //dic<key: s[right], value: right>
 
-            if (nums[right] == 0)
-            {
-                zeros++;
-            }
 
-            //while condition not meet increase left
-            while (zeros > k)
+            while (set.Contains(s[right]))
             {
-                if (nums[left] == 0)
-                {
-                    zeros--;
-                }
+                set.Remove(s[left]);
+
                 left++;
-
             }
-            int maxLenght = right - left + 1 ;
+
+            set.Add(s[right]);
+
+            int maxLenght = right - left + 1;
 
             result = Math.Max(result, maxLenght);
-
         }
         return result;
     }
+
     static void Main(string[] args)
     {
-        var nums = new int[] { 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 };
-        var target = 2;
-
-        var result = LongestOnes(nums, target);
+        var s = "jbpnbwwd"
+;
+        var result = LengthOfLongestSubstring(s);
 
         Console.WriteLine(result);
     }
