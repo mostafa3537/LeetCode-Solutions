@@ -5,38 +5,26 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static int LengthOfLongestSubstring(string s)
+    public static int MaxSubArray(int[] nums)
     {
-        var result = 0;
-        var left = 0;
-        var set = new HashSet<char>();
+        var result = nums[0];
+        var sum = nums[0];
 
-        for (int right = 0; right < s.Length; right++)
+        for (int i = 1; i < nums.Length; i++)
         {
-            //dic<key: s[right], value: right>
+            sum = Math.Max(sum + nums[i], nums[i]);
 
-
-            while (set.Contains(s[right]))
-            {
-                set.Remove(s[left]);
-
-                left++;
-            }
-
-            set.Add(s[right]);
-
-            int maxLenght = right - left + 1;
-
-            result = Math.Max(result, maxLenght);
+            result = Math.Max(result, sum);
         }
+
         return result;
     }
 
     static void Main(string[] args)
     {
-        var s = "jbpnbwwd"
-;
-        var result = LengthOfLongestSubstring(s);
+        var nums = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+        ;
+        var result = MaxSubArray(nums);
 
         Console.WriteLine(result);
     }
