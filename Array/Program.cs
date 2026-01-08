@@ -5,68 +5,42 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static int MaxSubarraySumCircular(int[] nums)
+    public static bool IsPalindrome(string s)
     {
-        // result = max bet (maxSum , sum - minSum)
+        var result = true;
 
-        var result = 0;
 
-        var max = MaxSum(nums);
-        var sum = Sum(nums);
-        var min = MinSum(nums);
+        // remove any space from string
 
-        result = Math.Max(MaxSum(nums), Sum(nums) - MinSum(nums));
+        // 2 poiter left =0 right = string.length
 
- 
+        s = s.ToLower().Replace(" ", ""); ;
 
-        return result;
-    }
+        string newString = new string(s.Where(char.IsLetterOrDigit).ToArray());
 
-    private static int MaxSum(int[] nums)
-    {
-        var result = nums[0];
-        var sum = nums[0];
+        var left = 0;
+        var right = newString.Length - 1;
 
-        for (int i = 1; i < nums.Length; i++)
+        while (left < right)
         {
-            sum = Math.Max(sum + nums[i], nums[i]);
+            if (newString[left] != newString[right])
+            {
+                return false;
+            }
+            left++;
 
-            result = Math.Max(result, sum);
+            right--;
         }
 
         return result;
     }
-    private static int Sum(int[] nums)
-    {
-        var sum = nums[0];
 
-        for (int i = 1; i < nums.Length; i++)
-        {
-            sum = sum + nums[i];
-        }
-
-        return sum;
-    }
-    private static int MinSum(int[] nums)
-    {
-        var result = nums[0];
-        var sum = nums[0];
-
-        for (int i = 1; i < nums.Length; i++)
-        {
-            sum = Math.Min(sum + nums[i], nums[i]);
-
-            result = Math.Min(result, sum);
-        }
-
-        return result;
-    }
 
     static void Main(string[] args)
     {
-        var nums = new int[] { -3, -2, -3 };
-        ;
-        var result = MaxSubarraySumCircular(nums);
+        var s = "A man, a plan, a canal: Panama";
+
+        var result = IsPalindrome(s);
 
         Console.WriteLine(result);
     }
