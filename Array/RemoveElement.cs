@@ -1,4 +1,4 @@
-﻿namespace Arrayprob;
+﻿namespace ArrayProblems;
 
 internal class RemoveElement
 {

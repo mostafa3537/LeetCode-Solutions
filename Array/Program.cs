@@ -1,43 +1,48 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-namespace Arrayprob;
+namespace ArrayProblems;
 
 internal class Program
 {
-	public static bool ContainsNearbyDuplicate(int[] nums, int k)
-	{
-		var result = false;
+    public static bool IsPalindrome(string s)
+    {
+        var result = true;
 
-		var dic = new Dictionary<int, int>();
 
-		for (int i = 0; i < nums.Length; i++)
-		{
+        // remove any space from string
 
-			if (dic.TryGetValue(nums[i], out int key))
-			{
+        // 2 poiter left =0 right = string.length
 
-				var value2 = Math.Abs(i - key);
+        s = s.ToLower().Replace(" ", ""); ;
 
-				if (value2 <= k)
-				{
-					result = true;
-					break;
-				}
-			}
+        string newString = new string(s.Where(char.IsLetterOrDigit).ToArray());
 
-			dic[nums[i]] = i;
-		}
+        var left = 0;
+        var right = newString.Length - 1;
 
-		return result;
-	}
-	static void Main(string[] args)
-	{
-		var nums = new int[] { 1, 2, 3, 1 };
-		var target = 3;
+        while (left < right)
+        {
+            if (newString[left] != newString[right])
+            {
+                return false;
+            }
+            left++;
 
-		var result = ContainsNearbyDuplicate(nums, target);
+            right--;
+        }
 
-		Console.WriteLine(result);
-	}
+        return result;
+    }
+
+
+    static void Main(string[] args)
+    {
+        var s = "A man, a plan, a canal: Panama";
+
+        var result = IsPalindrome(s);
+
+        Console.WriteLine(result);
+    }
 }
 
