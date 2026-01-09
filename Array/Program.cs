@@ -1,52 +1,40 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ArrayProblems;
 
 internal class Program
 {
-    public static int[] TwoSum(int[] numbers, int target)
+    public static void MoveZeroes(int[] numbers)
     {
-        var result = new int[2];
+        var write = 0;
 
-        //left pointer and right pointer
-        // while left < right
-        //  sum = numbers[left] + numbers[right] sum == target then return add them to result
-
-        var left = 0;
-        var right = numbers.Length - 1;
-
-        while (left < right)
+        for (int i = 0; i < numbers.Length; i++)
         {
-            if (numbers[left] + numbers[right] == target)
+            if (numbers[i] != 0)
             {
-                result[0] = left;
-                result[1] = right;
+                numbers[write] = numbers[i];
+                write++;
             }
 
-            if (numbers[left] + numbers[right] < target)
-            {
-                left++;
-            }
-            else
-            {
-                right--;
-            }
         }
 
-
-        return result;
+        for (int i = write; write < numbers.Length; write++)
+        {
+            numbers[write] = 0;
+        }
     }
 
 
     static void Main(string[] args)
     {
-        var nums = new int[] { 2, 7, 11, 15 };
+        var nums = new int[] { 0, 1, 0, 3, 12 };
         var target = 9;
 
-        var result = TwoSum(nums, target);
+        MoveZeroes(nums);
 
-        Console.WriteLine(result);
+        Console.WriteLine();
     }
 }
 
