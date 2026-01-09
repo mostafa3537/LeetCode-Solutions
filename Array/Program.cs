@@ -5,32 +5,35 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static bool IsPalindrome(string s)
+    public static int[] TwoSum(int[] numbers, int target)
     {
-        var result = true;
+        var result = new int[2];
 
-
-        // remove any space from string
-
-        // 2 poiter left =0 right = string.length
-
-        s = s.ToLower().Replace(" ", ""); ;
-
-        string newString = new string(s.Where(char.IsLetterOrDigit).ToArray());
+        //left pointer and right pointer
+        // while left < right
+        //  sum = numbers[left] + numbers[right] sum == target then return add them to result
 
         var left = 0;
-        var right = newString.Length - 1;
+        var right = numbers.Length - 1;
 
         while (left < right)
         {
-            if (newString[left] != newString[right])
+            if (numbers[left] + numbers[right] == target)
             {
-                return false;
+                result[0] = left;
+                result[1] = right;
             }
-            left++;
 
-            right--;
+            if (numbers[left] + numbers[right] < target)
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
         }
+
 
         return result;
     }
@@ -38,9 +41,10 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var s = "A man, a plan, a canal: Panama";
+        var nums = new int[] { 2, 7, 11, 15 };
+        var target = 9;
 
-        var result = IsPalindrome(s);
+        var result = TwoSum(nums, target);
 
         Console.WriteLine(result);
     }
