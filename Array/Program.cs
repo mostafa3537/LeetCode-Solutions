@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -6,35 +7,70 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static void MoveZeroes(int[] numbers)
+    public static int LongestMountain(int[] arr)
     {
-        var write = 0;
+        var result = 0;
+        var max = 0;
 
-        for (int i = 0; i < numbers.Length; i++)
+        // loop over []
+        // check if th current i in peak
+        // left and right side is desending
+        // store max
+        // result = Math.Max(max, currentMax)
+
+        if (arr.Length < 3)
         {
-            if (numbers[i] != 0)
+            return 0;
+        }
+
+        for (int i = 1; i < arr.Length - 1; i++)
+        {
+            if (arr[i] > arr[i + 1] && arr[i] > arr[i - 1])
             {
-                numbers[write] = numbers[i];
-                write++;
+                var left = i - 1;
+                var right = i + 1;
+
+                if (left >= 1)
+                {
+                    while (arr[left] > arr[left - 1] && left < i && left >= 1)
+                    {
+                        left--;
+                        if (left == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (right < arr.Length - 1)
+                {
+                    while (arr[right] > arr[right + 1] && right > i && right < arr.Length)
+                    {
+                        right++;
+                        if (right == arr.Length - 1)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                max = Math.Max(max, right - left + 1);
+                result = max;
             }
-
         }
 
-        for (int i = write; write < numbers.Length; write++)
-        {
-            numbers[write] = 0;
-        }
+        return result;
     }
 
 
     static void Main(string[] args)
     {
-        var nums = new int[] { 0, 1, 0, 3, 12 };
-        var target = 9;
+        var nums = new int[] { 40, 51, 29, 19, 50, 25 };
+        //var target = 9;
 
-        MoveZeroes(nums);
+        var result = LongestMountain(nums);
 
-        Console.WriteLine();
+        Console.WriteLine(result);
     }
 }
 
