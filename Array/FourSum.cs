@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ArrayProblems;
 
-internal class Program
+internal class FourSumProblem
 {
     public static IList<IList<int>> FourSum(int[] nums, int target)
     {
@@ -28,7 +29,7 @@ internal class Program
                 if (j > i + 1 && nums[j] == nums[j - 1])
                     continue;
 
-                var left =j + 1;
+                var left = j + 1;
                 var right = nums.Length - 1;
 
 
@@ -38,7 +39,7 @@ internal class Program
 
                     if (sum == target)
                     {
-                        result.Add(new List<int> { nums[j], nums[left], nums[right] , nums[i] });
+                        result.Add(new List<int> { nums[j], nums[left], nums[right], nums[i] });
 
                         while (left < right && nums[left] == nums[left + 1])
                             left++;
@@ -68,14 +69,5 @@ internal class Program
 
         return result;
 
-    }
-    static void Main(string[] args)
-    {
-        var nums = new int[] { 1000000000, 1000000000, 1000000000, 1000000000 };
-        var target = -294967296;
-
-        var result = FourSum(nums, target);
-
-        Console.WriteLine(result);
     }
 }
