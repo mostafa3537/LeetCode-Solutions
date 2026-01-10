@@ -7,74 +7,29 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static IList<IList<int>> FourSum(int[] nums, int target)
+    public static int MaximumProduct(int[] nums)
     {
-        var result = new List<IList<int>>();
-
-        if (nums.Length < 4)
+        if (nums.Length < 3)
         {
-            return result;
+            return 0;
         }
+
 
         Array.Sort(nums);
 
-        for (int i = 0; i < nums.Length - 1; i++)
-        {
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
+        var max = nums[0] * nums[1] * nums[nums.Length - 1];
 
-            for (int j = i + 1; j < nums.Length; j++)
-            {
-                if (j > i + 1 && nums[j] == nums[j - 1])
-                    continue;
+        var min = nums[nums.Length - 3] * nums[nums.Length - 2] * nums[nums.Length - 1];
 
-                var left =j + 1;
-                var right = nums.Length - 1;
-
-
-                while (left < right && left != j && right != i)
-                {
-                    long sum = (long)nums[j] + nums[left] + nums[right] + nums[i];
-
-                    if (sum == target)
-                    {
-                        result.Add(new List<int> { nums[j], nums[left], nums[right] , nums[i] });
-
-                        while (left < right && nums[left] == nums[left + 1])
-                            left++;
-
-                        // skip duplicate right
-                        while (left < right && nums[right] == nums[right - 1])
-                            right--;
-
-                        left++;
-                        right--;
-
-                    }
-
-
-                    else if (sum > target)
-                    {
-                        right--;
-                    }
-                    else
-                    {
-                        left++;
-                    }
-                }
-            }
-
-        }
-
-        return result;
+        return Math.Max(max, min);
 
     }
     static void Main(string[] args)
     {
-        var nums = new int[] { 1000000000, 1000000000, 1000000000, 1000000000 };
-        var target = -294967296;
+        var nums = new int[] { 1, 2, 3 };
+        //var target = -294967296;
 
-        var result = FourSum(nums, target);
+        var result = MaximumProduct(nums);
 
         Console.WriteLine(result);
     }
