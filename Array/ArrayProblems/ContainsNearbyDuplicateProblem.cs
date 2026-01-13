@@ -1,4 +1,4 @@
-﻿namespace Array;
+﻿namespace Problems.ArrayProblems;
 
 internal class ContainsNearbyDuplicateProblem
 {

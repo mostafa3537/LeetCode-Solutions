@@ -1,4 +1,4 @@
-﻿namespace ArrayProblems;
+﻿namespace Problems.StringProblems;
 
 internal class RemoveElement
 {

@@ -1,4 +1,4 @@
-﻿namespace ArrayProblems;
+﻿namespace Problems.ArrayProblems;
 
 internal class ThreeSum
 {
