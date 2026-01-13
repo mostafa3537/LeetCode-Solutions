@@ -1,48 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ArrayProblems;
 
 internal class Program
 {
-    public static bool IsPalindrome(string s)
+    public static int MaximumProduct(int[] nums)
     {
-        var result = true;
-
-
-        // remove any space from string
-
-        // 2 poiter left =0 right = string.length
-
-        s = s.ToLower().Replace(" ", ""); ;
-
-        string newString = new string(s.Where(char.IsLetterOrDigit).ToArray());
-
-        var left = 0;
-        var right = newString.Length - 1;
-
-        while (left < right)
+        if (nums.Length < 3)
         {
-            if (newString[left] != newString[right])
-            {
-                return false;
-            }
-            left++;
-
-            right--;
+            return 0;
         }
 
-        return result;
+
+        Array.Sort(nums);
+
+        var max = nums[0] * nums[1] * nums[nums.Length - 1];
+
+        var min = nums[nums.Length - 3] * nums[nums.Length - 2] * nums[nums.Length - 1];
+
+        return Math.Max(max, min);
+
     }
-
-
     static void Main(string[] args)
     {
-        var s = "A man, a plan, a canal: Panama";
+        var nums = new int[] { 1, 2, 3 };
+        //var target = -294967296;
 
-        var result = IsPalindrome(s);
+        var result = MaximumProduct(nums);
 
         Console.WriteLine(result);
     }
 }
-
