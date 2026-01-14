@@ -1,71 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
-namespace ArrayProblems;
+﻿namespace Problems;
 
 internal class Program
 {
-	public static bool IsAnagram(string s, string t)
+	public static int IsAnagram(int[] nums)
 	{
-		// loop over first strin add each letter in dic
-		// loop over second on check if all the leters appears
 
-		if (string.IsNullOrWhiteSpace(s))
-		{ return false; }
+		// sort the []
+		//loop over if the next element is missing or return the next number of the []
 
-		if (string.IsNullOrWhiteSpace(t))
-		{ return false; }
-
-
-		if (s.Length != t.Length)
-		{ return false; }
-
-		var dic = new Dictionary<char, int>();
-
-		for (int i = 0; i < s.Length; i++)
+		if (nums.Length == 1)
 		{
-
-			if (dic.ContainsKey(s[i]))
+			if (nums[0] <= 0)
 			{
-				dic[s[i]]++;
+				return nums[^1] + 1;
 			}
-			else
-			{
-				dic[s[i]] = 1;
+			else {
+				return nums[^1] - 1;
 			}
 		}
 
-		for (int i = 0; i < t.Length; i++)
+		Array.Sort(nums);
+
+		for (int i = 0; i < nums.Length; i++)
 		{
-			if (dic.TryGetValue(t[i], out var val))
+			if (nums[0] > 0)
 			{
-				if (val == 0)
+				return nums[0] - 1;
+			}
+			if (i < nums.Length - 1)
+			{
+				if (nums[i + 1] != nums[i] + 1)
 				{
-					return false;
+					return nums[i] + 1;
 				}
 			}
 
-			if (dic.ContainsKey(t[i]))
-			{
-				dic[t[i]]--;
-			}
-			else
-			{
-				return false;
-			}
-
 		}
 
-		return true;
+
+		return nums[^1] + 1;
 	}
 	static void Main(string[] args)
 	{
-		var s = "rat";
-		var t = "car";
+		var s = new int[] { 1, 2 };
 
-		var result = IsAnagram(s, t);
+		var result = IsAnagram(s);
 
 		Console.WriteLine(result);
 	}
