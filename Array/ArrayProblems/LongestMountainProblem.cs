@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrayProblems
+namespace Problems.ArrayProblems
 {
     internal class LongestMountainProblem
     {

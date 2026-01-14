@@ -7,30 +7,66 @@ namespace ArrayProblems;
 
 internal class Program
 {
-    public static int MaximumProduct(int[] nums)
-    {
-        if (nums.Length < 3)
-        {
-            return 0;
-        }
+	public static bool IsAnagram(string s, string t)
+	{
+		// loop over first strin add each letter in dic
+		// loop over second on check if all the leters appears
+
+		if (string.IsNullOrWhiteSpace(s))
+		{ return false; }
+
+		if (string.IsNullOrWhiteSpace(t))
+		{ return false; }
 
 
-        Array.Sort(nums);
+		if (s.Length != t.Length)
+		{ return false; }
 
-        var max = nums[0] * nums[1] * nums[nums.Length - 1];
+		var dic = new Dictionary<char, int>();
 
-        var min = nums[nums.Length - 3] * nums[nums.Length - 2] * nums[nums.Length - 1];
+		for (int i = 0; i < s.Length; i++)
+		{
 
-        return Math.Max(max, min);
+			if (dic.ContainsKey(s[i]))
+			{
+				dic[s[i]]++;
+			}
+			else
+			{
+				dic[s[i]] = 1;
+			}
+		}
 
-    }
-    static void Main(string[] args)
-    {
-        var nums = new int[] { 1, 2, 3 };
-        //var target = -294967296;
+		for (int i = 0; i < t.Length; i++)
+		{
+			if (dic.TryGetValue(t[i], out var val))
+			{
+				if (val == 0)
+				{
+					return false;
+				}
+			}
 
-        var result = MaximumProduct(nums);
+			if (dic.ContainsKey(t[i]))
+			{
+				dic[t[i]]--;
+			}
+			else
+			{
+				return false;
+			}
 
-        Console.WriteLine(result);
-    }
+		}
+
+		return true;
+	}
+	static void Main(string[] args)
+	{
+		var s = "rat";
+		var t = "car";
+
+		var result = IsAnagram(s, t);
+
+		Console.WriteLine(result);
+	}
 }
