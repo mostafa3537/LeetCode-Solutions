@@ -4,93 +4,50 @@ namespace Problems;
 
 internal class Program
 {
-	public static void IsAnagram(int[] nums)
+	public static bool IsSubsequence(string s, string t)
 	{
+		// loop over add char in dic with freq
+		// lopp 2nd [] check if the char in dic -- freq
 
- 
-	}
-	static void Main(string[] args)
-	{
-		//[ "getMin","pop","top","getMin","pop","getMin","pop"]
-		MinStack minStack = new MinStack();
-		minStack.Push(-2);
-		minStack.Push(0);
-		minStack.Push(-3);
-		minStack.GetMin(); // return -3
-		minStack.Pop();
-		minStack.GetMin(); // return -3
-		minStack.Top();    // return 0
-		minStack.GetMin(); // return -2
-		minStack.Pop();
-		minStack.Push(0);
-		minStack.Push(0);
-		minStack.Push(0);
-		minStack.GetMin(); // return -3
-		minStack.Pop();
-		minStack.Top();    // return 0
-		minStack.GetMin(); // return -3
-		minStack.Pop();
-		minStack.GetMin(); // return -3
-		minStack.Pop();
-
-		//var result = IsAnagram(s);
-
-		//Console.WriteLine(result);
-	}
-
-	public class MinStack
-	{
-		private List<int> _stack { get; set; }= new List<int>();
-		private int _min{ get; set; } = 0;
-		public MinStack()
+		if (s.Length > t.Length)
 		{
-			_stack = new List<int> { };
+			return false;
 		}
 
-		public void Push(int val)
+		var sPointer = 0;
+		var tPointer = 0;
+
+		while (sPointer < s.Length && tPointer < t.Length)
 		{
-			if (_stack.Count == 0)
+
+			if (s[sPointer] == t[tPointer])
 			{
-				_min = val;
+				sPointer++;
+				tPointer++;
 			}
 			else
 			{
-				if (val < _min)
-				{
-					_min = val;
-				}
-			}
-			_stack.Add(val);
-
-		}
-
-		public void Pop()
-		{
-			if (_stack.Count == 0) 
-			{ 
-				_min = 0;
-				return;
-			}
-			var lastIndex = _stack.Count - 1;
-			_stack.RemoveAt(lastIndex);
-
-			if (_stack.Count > 0)
-			{
-				_min = _stack.Min();
+				tPointer++;
 
 			}
-
 		}
 
-		public int Top()
+		if (sPointer != s.Length)
 		{
-			return _stack[^1];
-		}
+			return false;
 
-		public int GetMin()
-		{
-			return _min;
 		}
+		return true;
+
 	}
+	static void Main(string[] args)
+	{
+		var s = "acb"; var t = "ahbgdc";
+		var result = IsSubsequence(s, t);
+
+		Console.WriteLine(result);
+	}
+
+
 
 }
