@@ -4,50 +4,66 @@ namespace Problems;
 
 internal class Program
 {
-	public static bool IsSubsequence(string s, string t)
-	{
-		// loop over add char in dic with freq
-		// lopp 2nd [] check if the char in dic -- freq
+    public static int Trap(int[] nums)
+    {
+        var result = 0;
 
-		if (s.Length > t.Length)
-		{
-			return false;
-		}
+        if (nums.Length <= 2)
+        {
+            return result;
+        }
 
-		var sPointer = 0;
-		var tPointer = 0;
-
-		while (sPointer < s.Length && tPointer < t.Length)
-		{
-
-			if (s[sPointer] == t[tPointer])
-			{
-				sPointer++;
-				tPointer++;
-			}
-			else
-			{
-				tPointer++;
-
-			}
-		}
-
-		if (sPointer != s.Length)
-		{
-			return false;
-
-		}
-		return true;
-
-	}
-	static void Main(string[] args)
-	{
-		var s = "acb"; var t = "ahbgdc";
-		var result = IsSubsequence(s, t);
-
-		Console.WriteLine(result);
-	}
+        var leftMaxArray = new int[nums.Length];
+        var maxLeft = 0;
 
 
 
+        for (int i = 0; i < leftMaxArray.Length; i++)
+        {
+
+            maxLeft = Math.Max(maxLeft, nums[i]);
+
+            leftMaxArray[i] = maxLeft;
+        }
+
+        /////--------------------------------------------------------------------------------------------//////
+        var rightMaxArray = new int[nums.Length];
+        var maxRight = nums[nums.Length - 1];
+
+        for (int i = rightMaxArray.Length - 2; i >= 0; i--)
+        {
+
+            maxRight = Math.Max(maxRight, nums[i]);
+
+            rightMaxArray[i] = maxRight;
+        }
+
+
+        for (int i = 0; i < nums.Length; i++)
+        {
+            var leftMax = leftMaxArray[i];
+            var rightMax = rightMaxArray[i];
+
+
+            var minHeight = Math.Min(leftMax, rightMax);
+
+            // If current height is less than minHeight, water can be trapped
+
+            if (nums[i] < minHeight)
+            {
+                result += minHeight - nums[i];
+            }
+
+        }
+        return result;
+    }
+
+    static void Main(string[] args)
+    {
+        var nums = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+
+        var result = Trap(nums);
+
+        Console.WriteLine(result);
+    }
 }
