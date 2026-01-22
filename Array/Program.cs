@@ -4,66 +4,63 @@ namespace Problems;
 
 internal class Program
 {
-    public static int Trap(int[] nums)
-    {
-        var result = 0;
+	public int MinSteps(string s, string t)
+	{
+		// sort s and make dic of it's char and freq
+		// sort t make the comparason and count replacement
 
-        if (nums.Length <= 2)
-        {
-            return result;
-        }
+		if (string.IsNullOrWhiteSpace(s))
+		{ return 0; }
 
-        var leftMaxArray = new int[nums.Length];
-        var maxLeft = 0;
-
+		if (string.IsNullOrWhiteSpace(t))
+		{ return 0; }
 
 
-        for (int i = 0; i < leftMaxArray.Length; i++)
-        {
+		if (s.Length != t.Length)
+		{ return 0; }
 
-            maxLeft = Math.Max(maxLeft, nums[i]);
+		var dic = new Dictionary<char, int>();
 
-            leftMaxArray[i] = maxLeft;
-        }
+		for (int i = 0; i < s.Length; i++)
+		{
+			if (dic.ContainsKey(s[i]))
+			{
+				dic[s[i]]++;
+			}
+			else
+			{
+				dic[s[i]] = 1;
+			}
+		}
 
-        /////--------------------------------------------------------------------------------------------//////
-        var rightMaxArray = new int[nums.Length];
-        var maxRight = nums[nums.Length - 1];
+		var result = 0;
 
-        for (int i = rightMaxArray.Length - 2; i >= 0; i--)
-        {
+		for (int i = 0; i < t.Length; i++)
+		{
+			if (dic.TryGetValue(t[i], out var val) && val > 0)
+			{
 
-            maxRight = Math.Max(maxRight, nums[i]);
+				dic[t[i]]--;
 
-            rightMaxArray[i] = maxRight;
-        }
+			}
 
+			else
+			{
+				result++;
+			}
 
-        for (int i = 0; i < nums.Length; i++)
-        {
-            var leftMax = leftMaxArray[i];
-            var rightMax = rightMaxArray[i];
+		}
 
+		return result;
+	}
 
-            var minHeight = Math.Min(leftMax, rightMax);
+	static void Main(string[] args)
+	{
+		var s = "gctcxyuluxjuxnsvmomavutrrfb";
+		var t = "qijrjrhqqjxjtprybrzpyfyqtzf";
 
-            // If current height is less than minHeight, water can be trapped
+		var result = MinSteps(s, t);
 
-            if (nums[i] < minHeight)
-            {
-                result += minHeight - nums[i];
-            }
-
-        }
-        return result;
-    }
-
-    static void Main(string[] args)
-    {
-        var nums = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
-
-        var result = Trap(nums);
-
-        Console.WriteLine(result);
-    }
+		Console.WriteLine(result);
+	}
 }
