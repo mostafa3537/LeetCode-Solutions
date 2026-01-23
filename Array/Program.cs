@@ -4,62 +4,62 @@ namespace Problems;
 
 internal class Program
 {
-	public int MinSteps(string s, string t)
+	public static bool IsIsomorphic(string s, string t)
 	{
-		// sort s and make dic of it's char and freq
-		// sort t make the comparason and count replacement
+		var sdictionay = new Dictionary<char,int>();
+		var tdictionay = new Dictionary<char,int>();
+		var sList = new List<int>();
+		var tList = new List<int>();
 
-		if (string.IsNullOrWhiteSpace(s))
-		{ return 0; }
+		var start = 0;
+		var tstart = 0;
+		for (int i = 0; i < s.Length; i++)
+		{
+			if (sdictionay.TryGetValue(s[i], out int val))
+			{
+                sList.Add(val);
 
-		if (string.IsNullOrWhiteSpace(t))
-		{ return 0; }
+            }
+            else
+			{
+				sdictionay.Add(s[i], start);
+                sList.Add(start);
+                start++;
+            }
+		}
 
+        for (int i = 0; i < t.Length; i++)
+        {
+            if (tdictionay.TryGetValue(t[i], out int val))
+            {
+                tList.Add(val);
 
-		if (s.Length != t.Length)
-		{ return 0; }
-
-		var dic = new Dictionary<char, int>();
+            }
+            else
+            {
+                tdictionay.Add(t[i], tstart);
+                tList.Add(tstart);
+                tstart++;
+            }
+        }
 
 		for (int i = 0; i < s.Length; i++)
 		{
-			if (dic.ContainsKey(s[i]))
+			if (sList[i] != tList[i])
 			{
-				dic[s[i]]++;
-			}
-			else
-			{
-				dic[s[i]] = 1;
+				return false;
 			}
 		}
 
-		var result = 0;
-
-		for (int i = 0; i < t.Length; i++)
-		{
-			if (dic.TryGetValue(t[i], out var val) && val > 0)
-			{
-
-				dic[t[i]]--;
-
-			}
-
-			else
-			{
-				result++;
-			}
-
-		}
-
-		return result;
+        return true;
 	}
 
 	static void Main(string[] args)
 	{
-		var s = "gctcxyuluxjuxnsvmomavutrrfb";
-		var t = "qijrjrhqqjxjtprybrzpyfyqtzf";
+		var s = "egg";
+		var t = "add";
 
-		var result = MinSteps(s, t);
+		var result = IsIsomorphic(s, t);
 
 		Console.WriteLine(result);
 	}
