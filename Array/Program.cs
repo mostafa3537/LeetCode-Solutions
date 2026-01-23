@@ -4,63 +4,47 @@ namespace Problems;
 
 internal class Program
 {
-	public static bool IsIsomorphic(string s, string t)
-	{
-		var sdictionay = new Dictionary<char,int>();
-		var tdictionay = new Dictionary<char,int>();
-		var sList = new List<int>();
-		var tList = new List<int>();
+    public static bool ValidPalindrome(string s)
+    {
+        var left = 0;
+        var right = s.Length - 1;
 
-		var start = 0;
-		var tstart = 0;
-		for (int i = 0; i < s.Length; i++)
-		{
-			if (sdictionay.TryGetValue(s[i], out int val))
-			{
-                sList.Add(val);
-
-            }
-            else
-			{
-				sdictionay.Add(s[i], start);
-                sList.Add(start);
-                start++;
-            }
-		}
-
-        for (int i = 0; i < t.Length; i++)
+        while (left < right)
         {
-            if (tdictionay.TryGetValue(t[i], out int val))
+            if (s[left] == s[right])
             {
-                tList.Add(val);
-
+                left++;
+                right--;
             }
             else
             {
-                tdictionay.Add(t[i], tstart);
-                tList.Add(tstart);
-                tstart++;
+                return IsPalindrome(s, left+1, right) || IsPalindrome(s, left, right - 1);
             }
         }
 
-		for (int i = 0; i < s.Length; i++)
-		{
-			if (sList[i] != tList[i])
-			{
-				return false;
-			}
-		}
-
         return true;
-	}
+    }
 
-	static void Main(string[] args)
-	{
-		var s = "egg";
-		var t = "add";
+    private static bool IsPalindrome(string s, int left, int right)
+    {
+        while (left < right)
+        {
+            if (s[left] != s[right])
+            {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
 
-		var result = IsIsomorphic(s, t);
+    static void Main(string[] args)
+    {
+        var s = "eedede";
 
-		Console.WriteLine(result);
-	}
+        var result = ValidPalindrome(s);
+
+        Console.WriteLine(result);
+    }
 }
