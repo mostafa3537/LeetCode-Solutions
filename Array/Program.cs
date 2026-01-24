@@ -4,46 +4,62 @@ namespace Problems;
 
 internal class Program
 {
-    public static bool ValidPalindrome(string s)
+    public static bool IsAlienSorted(string[] words, string order)
     {
-        var left = 0;
-        var right = s.Length - 1;
+        // make a dic with all the char and it' priority
+        // loop over the words compare each one on with the next thier first letter 
+        // if its the same for all letters take the shorter
 
-        while (left < right)
+        var dic = new Dictionary<char, int>();
+
+        for (int i = 0; i < order.Length; i++)
         {
-            if (s[left] == s[right])
-            {
-                left++;
-                right--;
-            }
-            else
-            {
-                return IsPalindrome(s, left+1, right) || IsPalindrome(s, left, right - 1);
-            }
+            dic.Add(order[i], i);
         }
 
-        return true;
-    }
-
-    private static bool IsPalindrome(string s, int left, int right)
-    {
-        while (left < right)
+        for (int i = 0; i < words.Length - 1; i++)
         {
-            if (s[left] != s[right])
+            var word = words[i];
+            var nextWord = words[i + 1];
+
+            for (int j = 0; j < word.Length; j++)
             {
-                return false;
+                if (dic.TryGetValue(word[j], out int val) && dic.TryGetValue(nextWord[j], out int nextVal))
+                {
+                    if (nextVal < val)
+                    {
+                        return false;
+                    }
+                    else if (nextVal == val)
+                    {
+                        if (j == word.Length-1 || j == nextWord.Length - 1)
+                        {
+                            if (word.Length > nextWord.Length)
+                            {
+                                return false;
+                            }
+                        }
+                        continue;   
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
             }
-            left++;
-            right--;
+
         }
+
         return true;
     }
 
     static void Main(string[] args)
     {
-        var s = "eedede";
+        var words = new string[] { "apple", "app" };
+        var order = "abcdefghijklmnopqrstuvwxyz";
 
-        var result = ValidPalindrome(s);
+        var result = IsAlienSorted(words, order);
 
         Console.WriteLine(result);
     }
