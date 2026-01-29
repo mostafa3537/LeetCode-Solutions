@@ -4,59 +4,62 @@ namespace Problems;
 
 internal class Program
 {
-    public static int NumMatchingSubseq(string s, string[] words)
+    public static bool SearchMatrix(int[][] matrix, int target)
     {
-        var result = 0;
-
-        for (int i = 0; i < words.Length; i++)
+        for (int row = 0; row < matrix.Length; row++)
         {
-            if (IsSubsequence(words[i], s))
+            if (target > matrix[row][^1] || target < matrix[row][0])
             {
-                result++;
+                continue;
+            }
+
+            var find = search(matrix[row], target);
+            if (find == true)
+            {
+                return true;
             }
         }
-        return result;
+
+        return false;
     }
 
-    private static bool IsSubsequence(string s, string t)
+
+    private static bool search(int[] nums, int target)
     {
-        if (s.Length > t.Length)
+        var left = 0;
+        var right = nums.Length - 1;
+
+        while (left <= right)
         {
-            return false;
-        }
+            int mid =  (left + right) / 2;
 
-        var sPointer = 0;
-        var tPointer = 0;
-
-        while (sPointer < s.Length && tPointer < t.Length)
-        {
-
-            if (s[sPointer] == t[tPointer])
+            if (nums[mid] == target)
             {
-                sPointer++;
-                tPointer++;
+                return true;
             }
-            else
+            else if (nums[mid] > target)
             {
-                tPointer++;
-
+                right = mid - 1;
+            }
+            else if (nums[mid] < target)
+            {
+                left = mid + 1;
             }
         }
 
-        if (sPointer != s.Length)
-        {
-            return false;
-
-        }
-        return true;
-
+        return false;
     }
+
     static void Main(string[] args)
     {
-        var words = new string[] { "a", "bb", "acd", "ace" };
-        var s = "abcde";
+        var matrix = new int[][] { [1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30] };
+        var target = 5;
 
-        var result = NumMatchingSubseq(s, words);
+        var result = SearchMatrix(matrix, target);
+
+        //var arr = new int[] { 2, 5, 8, 12, 19 };
+
+        //var result2 = search(arr, target);
 
         Console.WriteLine(result);
     }
