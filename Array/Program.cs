@@ -4,63 +4,63 @@ namespace Problems;
 
 internal class Program
 {
-    public static bool SearchMatrix(int[][] matrix, int target)
+    public static void Rotate(int[][] matrix)
     {
-        for (int row = 0; row < matrix.Length; row++)
-        {
-            if (target > matrix[row][^1] || target < matrix[row][0])
-            {
-                continue;
-            }
+        // difine second diagonal
 
-            var find = search(matrix[row], target);
-            if (find == true)
+        int size = matrix.Length;
+
+        // Loop through each row
+        for (int row = 0; row < size; row++)
+        {
+            // Loop through columns that are BEFORE the secondary diagonal
+            // Secondary diagonal index for this row is: size - 1 - row
+            for (int col = 0; col < size - 1 - row; col++)
             {
-                return true;
+                // Current cell
+                int currentRow = row;
+                int currentCol = col;
+
+                // Mirrored cell across the secondary diagonal
+                int mirroredRow = size - 1 - col;
+                int mirroredCol = size - 1 - row;
+
+                // Swap the two values
+                int temp = matrix[currentRow][currentCol];
+                matrix[currentRow][currentCol] = matrix[mirroredRow][mirroredCol];
+                matrix[mirroredRow][mirroredCol] = temp;
             }
         }
+        // swap around mid row
 
-        return false;
-    }
-
-
-    private static bool search(int[] nums, int target)
-    {
-        var left = 0;
-        var right = nums.Length - 1;
-
-        while (left <= right)
+        for (int row = 0; row < matrix.Length / 2; row++)
         {
-            int mid =  (left + right) / 2;
+            var currentRow =  row;
+            var reversedRow =  matrix.Length - 1 - row;
 
-            if (nums[mid] == target)
+            for (int i = 0; i < matrix.Length; i++)
             {
-                return true;
+                var temp = 0;
+
+                var currentValue = matrix[currentRow][i];
+                var reversedValue = matrix[reversedRow][i];
+
+                temp = currentValue;
+                matrix[currentRow][i] = reversedValue;
+                matrix[reversedRow][i] = temp;
             }
-            else if (nums[mid] > target)
-            {
-                right = mid - 1;
-            }
-            else if (nums[mid] < target)
-            {
-                left = mid + 1;
-            }
+
         }
 
-        return false;
     }
+
 
     static void Main(string[] args)
     {
-        var matrix = new int[][] { [1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30] };
-        var target = 5;
+        var matrix = new int[][] { [1, 2, 3], [4, 5, 6], [7, 8, 9] };
 
-        var result = SearchMatrix(matrix, target);
+        Rotate(matrix);
 
-        //var arr = new int[] { 2, 5, 8, 12, 19 };
-
-        //var result2 = search(arr, target);
-
-        Console.WriteLine(result);
+        Console.WriteLine();
     }
 }
