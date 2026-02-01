@@ -4,63 +4,70 @@ namespace Problems;
 
 internal class Program
 {
-    public static void Rotate(int[][] matrix)
-    {
-        // difine second diagonal
+	public static string SimplifyPath(string path)
+	{
+		var result = string.Empty;
 
-        int size = matrix.Length;
+		var stack = new Stack<string>();
 
-        // Loop through each row
-        for (int row = 0; row < size; row++)
-        {
-            // Loop through columns that are BEFORE the secondary diagonal
-            // Secondary diagonal index for this row is: size - 1 - row
-            for (int col = 0; col < size - 1 - row; col++)
-            {
-                // Current cell
-                int currentRow = row;
-                int currentCol = col;
-
-                // Mirrored cell across the secondary diagonal
-                int mirroredRow = size - 1 - col;
-                int mirroredCol = size - 1 - row;
-
-                // Swap the two values
-                int temp = matrix[currentRow][currentCol];
-                matrix[currentRow][currentCol] = matrix[mirroredRow][mirroredCol];
-                matrix[mirroredRow][mirroredCol] = temp;
-            }
-        }
-        // swap around mid row
-
-        for (int row = 0; row < matrix.Length / 2; row++)
-        {
-            var currentRow =  row;
-            var reversedRow =  matrix.Length - 1 - row;
-
-            for (int i = 0; i < matrix.Length; i++)
-            {
-                var temp = 0;
-
-                var currentValue = matrix[currentRow][i];
-                var reversedValue = matrix[reversedRow][i];
-
-                temp = currentValue;
-                matrix[currentRow][i] = reversedValue;
-                matrix[reversedRow][i] = temp;
-            }
-
-        }
-
-    }
+		var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
 
-    static void Main(string[] args)
-    {
-        var matrix = new int[][] { [1, 2, 3], [4, 5, 6], [7, 8, 9] };
+		for (int i = 0; i < segments.Length; i++)
+		{
+			var segment = segments[i];
+			if (segment == ".")
+			{
+				continue;
+			}
 
-        Rotate(matrix);
+			if (segment == "..")
+			{
+				if (stack.Count > 0)
+				{
+					stack.Pop();
+				}
+				continue;
+			}
 
-        Console.WriteLine();
-    }
+			stack.Push(segment);
+
+		}
+
+		var stringList = new List<string>();
+
+		while (stack.Count > 0)
+		{
+			var segment = stack.Pop();
+
+			if (segment.Length == 0)
+			{
+				continue;
+			}
+
+			stringList.Add(segment);
+		}
+
+		for (int i = stringList.Count - 1; i >= 0; i--)
+		{
+			result += $"/{stringList[i]}";
+		}
+
+		if (stringList.Count == 0)
+		{
+			result = "/";
+		}
+		return result;
+	}
+
+
+	static void Main(string[] args)
+	{
+		var path = "/a//b////c/d//././/..";
+
+
+		var res = SimplifyPath(path);
+
+		Console.WriteLine(res);
+	}
 }
