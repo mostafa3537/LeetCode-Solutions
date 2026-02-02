@@ -4,40 +4,38 @@ namespace Problems;
 
 internal class Program
 {
-	public static int[] DailyTemperatures(int[] temperatures)
+	public int[] NextGreaterElements(int[] nums)
 	{
-		var result = new int[temperatures.Length];
+		int length = nums.Length;
+		int[] result = new int[length];
+		Array.Fill(result, -1);
 
-		var length = temperatures.Length;
+		Stack<int> stack = new Stack<int>(); // stores indices
 
-		var stack = new Stack<int>();
-
-
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < length * 2; i++)
 		{
-			// create stack that maintain indecies with no greater than
-			// kkep check if the current stack index has greater temp if yes
-			// remove it and update the pervious temp if no add it to stack
+			int index = i % length;
 
-			while (stack.Count > 0 && temperatures[stack.Peek()] < temperatures[i])
+			while (stack.Count > 0 && nums[stack.Peek()] < nums[index])
 			{
-				// update pervious temps
-				var perviouseTemp = stack.Pop();
-
-				result[perviouseTemp] = i - perviouseTemp;
+				int previousIndex = stack.Pop();
+				result[previousIndex] = nums[index];
 			}
-			stack.Push(i);
+
+			if (i < length)
+			{
+				stack.Push(index);
+			}
 		}
 
 		return result;
 	}
 
-
 	static void Main(string[] args)
 	{
-		var path = new int[] { 30, 60, 90 };
+		var path = new int[] { 1, 2, 3, 4, 3 };
 
-		var res = DailyTemperatures(path);
+		var res = NextGreaterElements(path);
 
 		Console.WriteLine(res);
 	}
