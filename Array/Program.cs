@@ -4,7 +4,7 @@ namespace Problems;
 
 internal class Program
 {
-	public int[] NextGreaterElements(int[] nums)
+	public static int[] NextGreaterElements(int[] nums)
 	{
 		int length = nums.Length;
 		int[] result = new int[length];
