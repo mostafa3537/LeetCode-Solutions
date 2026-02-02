@@ -4,69 +4,40 @@ namespace Problems;
 
 internal class Program
 {
-	public static string SimplifyPath(string path)
+	public static int[] DailyTemperatures(int[] temperatures)
 	{
-		var result = string.Empty;
+		var result = new int[temperatures.Length];
 
-		var stack = new Stack<string>();
+		var length = temperatures.Length;
 
-		var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+		var stack = new Stack<int>();
 
 
-		for (int i = 0; i < segments.Length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			var segment = segments[i];
-			if (segment == ".")
+			// create stack that maintain indecies with no greater than
+			// kkep check if the current stack index has greater temp if yes
+			// remove it and update the pervious temp if no add it to stack
+
+			while (stack.Count > 0 && temperatures[stack.Peek()] < temperatures[i])
 			{
-				continue;
+				// update pervious temps
+				var perviouseTemp = stack.Pop();
+
+				result[perviouseTemp] = i - perviouseTemp;
 			}
-
-			if (segment == "..")
-			{
-				if (stack.Count > 0)
-				{
-					stack.Pop();
-				}
-				continue;
-			}
-
-			stack.Push(segment);
-
+			stack.Push(i);
 		}
 
-		var stringList = new List<string>();
-
-		while (stack.Count > 0)
-		{
-			var segment = stack.Pop();
-
-			if (segment.Length == 0)
-			{
-				continue;
-			}
-
-			stringList.Add(segment);
-		}
-
-		for (int i = stringList.Count - 1; i >= 0; i--)
-		{
-			result += $"/{stringList[i]}";
-		}
-
-		if (stringList.Count == 0)
-		{
-			result = "/";
-		}
 		return result;
 	}
 
 
 	static void Main(string[] args)
 	{
-		var path = "/a//b////c/d//././/..";
+		var path = new int[] { 30, 60, 90 };
 
-
-		var res = SimplifyPath(path);
+		var res = DailyTemperatures(path);
 
 		Console.WriteLine(res);
 	}
