@@ -4,6 +4,41 @@ namespace Problems;
 
 internal class Program
 {
+	public static int MaximalRectangle(char[][] matrix)
+	{
+		int maxArea = 0;
+
+		var length = matrix.Length;
+		var collength = matrix[0].Length;
+
+		var colCount = new int[collength];
+
+		for (int row = 0; row < length; row++)
+		{
+
+			for (int col = 0; col < collength; col++)
+			{
+
+				if (matrix[row][col] == '1')
+				{
+					colCount[col]++;
+
+				}
+				else
+				{
+					colCount[col] = 0;
+				}
+
+
+			}
+			var xx = LargestRectangleArea(colCount);
+			maxArea = Math.Max(LargestRectangleArea(colCount) , maxArea) ;
+
+		}
+
+		return maxArea;
+	}
+
 	public static int LargestRectangleArea(int[] nums)
 	{
 		// for each element calculate boundries (current > boundry) then stop
@@ -71,11 +106,12 @@ internal class Program
 
 		return result;
 	}
+
 	static void Main(string[] args)
 	{
-		var path = new int[] { 2, 1, 5, 6, 2, 3 };
+		var path = new char[][] { ['1', '0', '1', '0', '0'], ['1', '0', '1', '1', '1'], ['1', '1', '1', '1', '1'], ['1', '0', '0', '1', '0'] };
 
-		var res = LargestRectangleArea(path);
+		var res = MaximalRectangle(path);
 
 		Console.WriteLine(res);
 	}
