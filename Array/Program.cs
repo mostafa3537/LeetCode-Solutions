@@ -4,8 +4,12 @@ namespace Problems;
 
 internal class Program
 {
-	public static int MaximalRectangle(char[][] matrix)
+	public static int LargestSubmatrix(int[][] matrix)
 	{
+		// make histogram for each row
+		// reorder it desc
+		// cal Area & track max
+
 		int maxArea = 0;
 
 		var length = matrix.Length;
@@ -15,11 +19,9 @@ internal class Program
 
 		for (int row = 0; row < length; row++)
 		{
-
 			for (int col = 0; col < collength; col++)
 			{
-
-				if (matrix[row][col] == '1')
+				if (matrix[row][col] == 1)
 				{
 					colCount[col]++;
 
@@ -28,90 +30,45 @@ internal class Program
 				{
 					colCount[col] = 0;
 				}
-
-
 			}
-			var xx = LargestRectangleArea(colCount);
-			maxArea = Math.Max(LargestRectangleArea(colCount) , maxArea) ;
 
-		}
+			var reorderd = ReorderHistogram(colCount);
+			var area = CalCulateArea(reorderd);
 
-		return maxArea;
-	}
-
-	public static int LargestRectangleArea(int[] nums)
-	{
-		// for each element calculate boundries (current > boundry) then stop
-		// area = CurrentHeight * (rightBoundry - leftBoundry)
-		// return max area
-		// we need function to get the next small element and pervious small elemnt --> now u get the boundries 
-
-		int length = nums.Length;
-		int maxArea = 0;
-
-		var nextSmaller = NextSmallerEle(nums);
-		var prevSmaller = PreviousSmallerEle(nums);
-
-		for (int i = 0; i < length; i++)
-		{
-			int width = nextSmaller[i] - prevSmaller[i] - 1;
-			int area = nums[i] * width;
 			maxArea = Math.Max(maxArea, area);
 		}
 
 		return maxArea;
 	}
 
-	public static int[] NextSmallerEle(int[] nums)
+	private static int CalCulateArea(int[] reorderd)
 	{
-		int length = nums.Length;
-		int[] result = new int[length];
-		Array.Fill(result, length);
+		var maxArea = 0;
 
-		Stack<int> stack = new Stack<int>();
-
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < reorderd.Length; i++)
 		{
-			while (stack.Count > 0 && nums[stack.Peek()] > nums[i])
-			{
-				int index = stack.Pop();
-				result[index] = i;
-			}
-			stack.Push(i);
+			var area = 0;
+
+			area = reorderd[i] * (i + 1);
+
+			maxArea = Math.Max(maxArea, area);
 		}
 
-		return result;
+		return maxArea;
 	}
 
-	public static int[] PreviousSmallerEle(int[] nums)
+	private static int[] ReorderHistogram(int[] colCount)
 	{
-		int length = nums.Length;
-		int[] result = new int[length];
-		Array.Fill(result, -1);
+		var res = colCount.OrderByDescending(x => x).ToArray();
 
-		Stack<int> stack = new Stack<int>();
-
-		for (int i = 0; i < length; i++)
-		{
-			while (stack.Count > 0 && nums[stack.Peek()] >= nums[i])
-			{
-				stack.Pop();
-			}
-
-			if (stack.Count > 0)
-				result[i] = stack.Peek();
-
-			stack.Push(i);
-		}
-
-		return result;
+		return res;
 	}
 
 	static void Main(string[] args)
 	{
-		var path = new char[][] { ['1', '0', '1', '0', '0'], ['1', '0', '1', '1', '1'], ['1', '1', '1', '1', '1'], ['1', '0', '0', '1', '0'] };
+		var path = new int[][] { [1, 0, 1, 0, 1] };
 
-		var res = MaximalRectangle(path);
+		var res = LargestSubmatrix(path);
 
 		Console.WriteLine(res);
 	}
