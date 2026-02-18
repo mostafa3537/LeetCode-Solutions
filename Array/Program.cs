@@ -2,41 +2,32 @@
 
 internal class Program
 {
-    public static int ExclusiveTime(string s)
+    public static int FindKthLargest(int[] nums, int k)
     {
-        var stack = new Stack<char>();
+        var result = 0;
 
-        foreach (var c in s)
+        var priority = new PriorityQueue<int, int>();
+
+        for (int i = 0; i < nums.Length; i++)
         {
-            switch (c)
-            {
-                case '(':
-                    stack.Push(c);
-                    break;
-                case ')':
-                    if (stack.TryPeek(out char res) && res == '(')
-                    {
-                        stack.Pop();
-                    }
-                    else
-                    {
-                        stack.Push(c);
-
-                    }
-                    break;
-
-            }
+            priority.Enqueue(nums[i], nums[i]);
         }
 
-        return stack.Count;
+        for (int i = 0; i < nums.Length - k + 1; i++)
+        {
+            result = priority.Dequeue();
+        }
+
+        return result;
     }
 
 
     static void Main(string[] args)
     {
-        var path = "(((";
+        var path = new int[] { 3, 2, 3, 1, 2, 4, 5, 5, 6 };
+        var k = 4;
 
-        var res = ExclusiveTime(path);
+        var res = FindKthLargest(path, k);
 
         Console.WriteLine(res);
     }
