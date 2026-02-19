@@ -2,29 +2,48 @@
 
 internal class Program
 {
-    public static int[][] KClosest(int[][] points, int k)
+    public static int MaxEvents(int[][] events)
     {
-        var result = new int[k][];
+        var result = 0;
 
-        var priority = new PriorityQueue<int[], double>();
+        Array.Sort(events, (a, b) => a[0].CompareTo(b[0]));
 
-        for (int i = 0; i < points.Length; i++)
+        var priority = new PriorityQueue<int[], int>();
+
+        int i = 0;
+        int n = events.Length;
+
+        // get last day
+        int lastDay = 0;
+
+        for (int j = 0; j < n; j++)
         {
-            var point = points[i];
-
-
-            var distance = Math.Pow(point[0], 2) + Math.Pow(point[1], 2);
-
-            priority.Enqueue(point, distance);
+            lastDay = Math.Max(lastDay, events[j][1]);
         }
 
-        var length =  k ;
 
-        for (int i = 0; i < length; i++)
+        for (int day = 0; day <= lastDay; day++)
         {
-            var result2 = priority.Dequeue();
+            //attend all events start today
 
-            result[i] = result2;
+            while (i < n && events[i][0] == day)
+            {
+                priority.Enqueue(events[i], events[i][1]);
+                i++;
+            }
+
+            //remove expired events
+            while (priority.Count > 0 && priority.Peek()[1]< day)
+            {
+                priority.Dequeue();
+            }
+            //attend event with earliest end day
+
+            if (priority.Count > 0)
+            {
+                priority.Dequeue();
+                result++;
+            }
         }
 
         return result;
@@ -33,10 +52,9 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var path = new int[][] { [3, 3], [5, -1], [-2, 4] };
-        var k = 2;
+        var path = new int[][] { [1, 2], [2, 2], [3, 3], [3, 4], [3, 4] };
 
-        var res = KClosest(path, k);
+        var res = MaxEvents(path);
 
         Console.WriteLine(res);
     }
