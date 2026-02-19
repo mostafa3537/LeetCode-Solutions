@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Problems.Priority_Queue
+namespace Problems.PriorityQueue
 {
     internal class FindKthLargestProblem
     {

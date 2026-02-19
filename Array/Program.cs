@@ -2,20 +2,29 @@
 
 internal class Program
 {
-    public static int FindKthLargest(int[] nums, int k)
+    public static int[][] KClosest(int[][] points, int k)
     {
-        var result = 0;
+        var result = new int[k][];
 
-        var priority = new PriorityQueue<int, int>();
+        var priority = new PriorityQueue<int[], double>();
 
-        for (int i = 0; i < nums.Length; i++)
+        for (int i = 0; i < points.Length; i++)
         {
-            priority.Enqueue(nums[i], nums[i]);
+            var point = points[i];
+
+
+            var distance = Math.Pow(point[0], 2) + Math.Pow(point[1], 2);
+
+            priority.Enqueue(point, distance);
         }
 
-        for (int i = 0; i < nums.Length - k + 1; i++)
+        var length =  k ;
+
+        for (int i = 0; i < length; i++)
         {
-            result = priority.Dequeue();
+            var result2 = priority.Dequeue();
+
+            result[i] = result2;
         }
 
         return result;
@@ -24,10 +33,10 @@ internal class Program
 
     static void Main(string[] args)
     {
-        var path = new int[] { 3, 2, 3, 1, 2, 4, 5, 5, 6 };
-        var k = 4;
+        var path = new int[][] { [3, 3], [5, -1], [-2, 4] };
+        var k = 2;
 
-        var res = FindKthLargest(path, k);
+        var res = KClosest(path, k);
 
         Console.WriteLine(res);
     }
