@@ -1,60 +1,60 @@
 ﻿namespace Problems;
+using System.Collections.Generic;
 
 internal class Program
 {
-    public static int MaxEvents(int[][] events)
+    public static int MaxPerformance(int n, int[] speed, int[] efficiency, int k)
     {
-        var result = 0;
+        long result = 0;
 
-        Array.Sort(events, (a, b) => a[0].CompareTo(b[0]));
+        // Create a list of tuples to store speed and efficiency together
 
-        var priority = new PriorityQueue<int[], int>();
+        var engineers = new List<(int Speed, int Efficiency)>();
 
-        int i = 0;
-        int n = events.Length;
-
-        // get last day
-        int lastDay = 0;
-
-        for (int j = 0; j < n; j++)
+        for (int i = 0; i < n; i++)
         {
-            lastDay = Math.Max(lastDay, events[j][1]);
+            engineers.Add((speed[i], efficiency[i]));
         }
 
+        // Sort engineers by efficiency in descending order
 
-        for (int day = 0; day <= lastDay; day++)
+        engineers.Sort((a, b) => b.Efficiency.CompareTo(a.Efficiency));
+
+        // Use a min-heap to keep track of the k highest speeds
+
+        var minHeap = new PriorityQueue<int, int>();
+
+        long speedSum = 0;
+
+        foreach (var engineer in engineers)
         {
-            //attend all events start today
-
-            while (i < n && events[i][0] == day)
+            // Add the current engineer's speed to the heap and update the speed sum
+            minHeap.Enqueue(engineer.Speed, engineer.Speed);
+            speedSum += engineer.Speed;
+            // If we have more than k engineers, remove the one with the lowest speed
+            if (minHeap.Count > k)
             {
-                priority.Enqueue(events[i], events[i][1]);
-                i++;
+                int lowestSpeed = minHeap.Dequeue();
+ 
+                speedSum -= lowestSpeed;
             }
-
-            //remove expired events
-            while (priority.Count > 0 && priority.Peek()[1]< day)
-            {
-                priority.Dequeue();
-            }
-            //attend event with earliest end day
-
-            if (priority.Count > 0)
-            {
-                priority.Dequeue();
-                result++;
-            }
+            // Calculate the performance with the current efficiency and speed sum
+            long performance = speedSum * engineer.Efficiency;
+            result = Math.Max(result, performance);
         }
 
-        return result;
+        return (int)(result % 1_000_000_007);
     }
 
 
     static void Main(string[] args)
     {
-        var path = new int[][] { [1, 2], [2, 2], [3, 3], [3, 4], [3, 4] };
+        var n = 5;
+        var speed = new int[] { 10, 10, 7, 9, 8 };
+        var efficiency = new int[] { 9, 8, 3, 6, 9 };
+        var k = 1;
 
-        var res = MaxEvents(path);
+        var res = MaxPerformance(n, speed, efficiency, k);
 
         Console.WriteLine(res);
     }

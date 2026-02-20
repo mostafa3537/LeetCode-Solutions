@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Problems.PriorityQueue
+namespace Problems.PriorityQueueProblems
 {
     internal class MaxEventsProblem
     {
