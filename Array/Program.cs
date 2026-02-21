@@ -4,23 +4,49 @@ using System.Reflection.Metadata.Ecma335;
 
 internal class Program
 {
-    public static int LengthOfLastWord(string s)
+    public static bool IsPowerOfTwo(int n)
     {
-        var words = new List<string>();
+        if (n == 0)
+        {
+            return false;
+        }
 
-        s.Split(' ')
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToList().ForEach(x => words.Add(x));
+        if (n == 1)
+        {
+            return true;
+        }
 
-        return words[^1].Length;
+        var xx = Mth(n);
+
+        if (xx == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
     }
 
+    public static int Mth(int n)
+    {
+        if (n == 2) { return 1; }
+        if (n == 1) { return 0; }
+
+        if (n % 2 != 0)
+        {
+            return 0;
+        }
+
+        return Mth(n / 2);
+    }
 
     static void Main(string[] args)
     {
-        var speed = "   fly me   to   the moon  ";
+        var speed = 2000;
 
-        var res = LengthOfLastWord(speed);
+        var res = IsPowerOfTwo(speed);
 
         Console.WriteLine(res);
     }
