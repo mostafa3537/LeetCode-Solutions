@@ -1,23 +1,55 @@
 ﻿namespace Problems;
+
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
+using System.Xml.Linq;
 
 internal class Program
 {
-    public static ListNode MiddleNode(ListNode head)
+    public static ListNode RemoveNthFromEnd(ListNode head, int n)
     {
-        var slow = head;
-        var fast = head;
+        int length = GetLength(head);
 
-        while (fast.next != null)
-        {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
+        // If we need to remove the head
+        if (length == n)
+            return head.next;
 
-        return slow;
+        var indexToBeRemoved = length - n-1;
+
+        Remove(head, indexToBeRemoved);
+
+        return head;
     }
 
+    private static void Remove(ListNode head, int indexToBeRemoved)
+    {
+        var index = 0;
+
+        ListNode current = head;
+
+        while (current.next != null && index != indexToBeRemoved)
+        {
+            current = current.next;
+            index++;
+        }
+
+        if (current.next != null)
+        {
+            current.next = current.next.next;
+        }
+    }
+    public static int  GetLength(ListNode head)
+    {
+        int length = 0;
+        ListNode current = head;
+        while (current != null)
+        {
+            length++;
+            current = current.next;
+        }
+        return length;
+    }
     public class ListNode
     {
         public int val;
@@ -27,6 +59,8 @@ internal class Program
             this.val = val;
             this.next = next;
         }
+
+
     }
 
     static void Main(string[] args)
@@ -38,8 +72,9 @@ internal class Program
         head.next.next.next = new ListNode(4);
         head.next.next.next.next = new ListNode(5);
 
+        var n = 2;
 
-        var res = MiddleNode(head);
+        var res = RemoveNthFromEnd(head, n);
 
         Console.WriteLine(res);
     }
