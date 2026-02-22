@@ -4,49 +4,42 @@ using System.Reflection.Metadata.Ecma335;
 
 internal class Program
 {
-    public static bool IsPowerOfTwo(int n)
+    public static ListNode MiddleNode(ListNode head)
     {
-        if (n == 0)
+        var slow = head;
+        var fast = head;
+
+        while (fast.next != null)
         {
-            return false;
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        if (n == 1)
-        {
-            return true;
-        }
-
-        var xx = Mth(n);
-
-        if (xx == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-
+        return slow;
     }
 
-    public static int Mth(int n)
+    public class ListNode
     {
-        if (n == 2) { return 1; }
-        if (n == 1) { return 0; }
-
-        if (n % 2 != 0)
+        public int val;
+        public ListNode next;
+        public ListNode(int val = 0, ListNode next = null)
         {
-            return 0;
+            this.val = val;
+            this.next = next;
         }
-
-        return Mth(n / 2);
     }
 
     static void Main(string[] args)
     {
-        var speed = 2000;
+        //1,2,3,4,5
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
 
-        var res = IsPowerOfTwo(speed);
+
+        var res = MiddleNode(head);
 
         Console.WriteLine(res);
     }
