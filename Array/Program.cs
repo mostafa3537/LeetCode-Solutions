@@ -7,33 +7,63 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int StrStr(string haystack, string needle)
+    public static int SearchInsert(int[] nums, int target)
     {
-        var result = -1;
+        var length = nums.Length;
 
-        if (haystack.Length < needle.Length)
-        {
-            return result;
-        }
+        var left = length / 2;
 
-        for (int i = 0; i <= haystack.Length - needle.Length; i++)
+        var alreadyVisitedPos = new HashSet<int>();
+        var alreadyVisitedNeg = new HashSet<int>();
+
+        while (left < length)
         {
-            var subStr = haystack.Substring(i, needle.Length);
-            if (subStr == needle)
+            if (target == nums[left])
             {
-                result = i;
-                break;
+                return left;
+            }           
+            
+            if (left == 0)
+            {
+                if (target > nums[left])
+                {
+                    return 1;
+                }
+                return left;
             }
+
+            if (alreadyVisitedPos.Contains(left))
+            {
+                return left + 1;
+            }
+
+            if (alreadyVisitedNeg.Contains(left))
+            {
+                return left;
+            }
+
+            if (target > nums[left])
+            {
+                alreadyVisitedPos.Add(left);
+                left++;
+            }
+            else
+            {
+                alreadyVisitedNeg.Add(left);
+                left--;
+            }
+
         }
 
-        return result;
+        return length;
     }
 
     static void Main(string[] args)
     {
-        var haystack = "sadbutsad"; var needle = "sad";
+        var haystack = new int[] { 1, 3, 5, 6 };
+        var target = 2;
 
-        var res = StrStr(haystack , needle);
+        var res = SearchInsert(haystack, target);
 
         Console.WriteLine(res);
     }
