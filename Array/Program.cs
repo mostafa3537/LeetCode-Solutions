@@ -7,63 +7,29 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int SearchInsert(int[] nums, int target)
+    public static int MySqrt(int x)
     {
-        var length = nums.Length;
+        var result = 0;
 
-        var left = length / 2;
+        var max = int.MaxValue;
 
-        var alreadyVisitedPos = new HashSet<int>();
-        var alreadyVisitedNeg = new HashSet<int>();
 
-        while (left < length)
+        for (long i = 0; i < max; i++)
         {
-            if (target == nums[left])
+            if (i * i > x)
             {
-                return left;
-            }           
-            
-            if (left == 0)
-            {
-                if (target > nums[left])
-                {
-                    return 1;
-                }
-                return left;
+                return (int)i - 1;
             }
-
-            if (alreadyVisitedPos.Contains(left))
-            {
-                return left + 1;
-            }
-
-            if (alreadyVisitedNeg.Contains(left))
-            {
-                return left;
-            }
-
-            if (target > nums[left])
-            {
-                alreadyVisitedPos.Add(left);
-                left++;
-            }
-            else
-            {
-                alreadyVisitedNeg.Add(left);
-                left--;
-            }
-
         }
 
-        return length;
+        return result;
     }
 
     static void Main(string[] args)
     {
-        var haystack = new int[] { 1, 3, 5, 6 };
-        var target = 2;
+        var target = 2147395600;
 
-        var res = SearchInsert(haystack, target);
+        var res = MySqrt(target);
 
         Console.WriteLine(res);
     }
