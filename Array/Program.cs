@@ -7,74 +7,33 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static ListNode RemoveNthFromEnd(ListNode head, int n)
+    public static int StrStr(string haystack, string needle)
     {
-        int length = GetLength(head);
+        var result = -1;
 
-        // If we need to remove the head
-        if (length == n)
-            return head.next;
-
-        var indexToBeRemoved = length - n-1;
-
-        Remove(head, indexToBeRemoved);
-
-        return head;
-    }
-
-    private static void Remove(ListNode head, int indexToBeRemoved)
-    {
-        var index = 0;
-
-        ListNode current = head;
-
-        while (current.next != null && index != indexToBeRemoved)
+        if (haystack.Length < needle.Length)
         {
-            current = current.next;
-            index++;
+            return result;
         }
 
-        if (current.next != null)
+        for (int i = 0; i <= haystack.Length - needle.Length; i++)
         {
-            current.next = current.next.next;
-        }
-    }
-    public static int  GetLength(ListNode head)
-    {
-        int length = 0;
-        ListNode current = head;
-        while (current != null)
-        {
-            length++;
-            current = current.next;
-        }
-        return length;
-    }
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int val = 0, ListNode next = null)
-        {
-            this.val = val;
-            this.next = next;
+            var subStr = haystack.Substring(i, needle.Length);
+            if (subStr == needle)
+            {
+                result = i;
+                break;
+            }
         }
 
-
+        return result;
     }
 
     static void Main(string[] args)
     {
-        //1,2,3,4,5
-        ListNode head = new ListNode(1);
-        head.next = new ListNode(2);
-        head.next.next = new ListNode(3);
-        head.next.next.next = new ListNode(4);
-        head.next.next.next.next = new ListNode(5);
+        var haystack = "sadbutsad"; var needle = "sad";
 
-        var n = 2;
-
-        var res = RemoveNthFromEnd(head, n);
+        var res = StrStr(haystack , needle);
 
         Console.WriteLine(res);
     }
