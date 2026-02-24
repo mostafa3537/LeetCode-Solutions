@@ -7,30 +7,45 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static ListNode DeleteDuplicates(ListNode head)
+    public static ListNode Partition(ListNode head, int x)
     {
         if (head == null)
         {
-            return head;
+            return null;
         }
+
+        var leftList = new ListNode();
+        var rightList = new ListNode();     
+        
+        var leftTail = leftList;
+        var rightTail = rightList;
+
         ListNode current = head;
 
-        while (current.next != null && head?.next.val != null)
+        while (current != null)
         {
-            if (current.val == current.next.val)
+            var nextNode = current.next;
+            current.next = null;
+
+            if (current.val < x)
             {
-                current.next = current.next.next;
+                leftTail.next = current;
+                leftTail = current;
             }
             else
             {
-                current = current.next;
+                rightTail.next = current;
+                rightTail = current;
             }
+
+
+            current = nextNode;
         }
 
-        return head;
-    }
+        leftTail.next = rightList.next;
 
- 
+        return leftList.next;
+    }
 
     public class ListNode
     {
@@ -41,18 +56,21 @@ internal class Program
             this.val = val;
             this.next = next;
         }
- 
+
     }
 
     static void Main(string[] args)
     {
+        //[1,4,3,2,5,2]
         ListNode head = new ListNode(1);
-        head.next = new ListNode(1);
-        head.next.next = new ListNode(2);
-        head.next.next.next = new ListNode(3);
-        head.next.next.next.next = new ListNode(3);
+        head.next = new ListNode(4);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(2);
+        head.next.next.next.next = new ListNode(5);
+        head.next.next.next.next.next = new ListNode(2);
 
-        var res = DeleteDuplicates(head);
+        var x = 3;
+        var res = Partition(head, x);
 
         Console.WriteLine(res);
     }
