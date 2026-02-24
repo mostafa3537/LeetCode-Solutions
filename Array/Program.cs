@@ -7,44 +7,32 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static ListNode Partition(ListNode head, int x)
+    public static bool HasCycle(ListNode head)
     {
         if (head == null)
         {
-            return null;
+            return false;
         }
 
-        var leftList = new ListNode();
-        var rightList = new ListNode();     
-        
-        var leftTail = leftList;
-        var rightTail = rightList;
+        // loop over stor the visited nodes in a hashset, if we see a node that is already in the hashset, then we have a cycle
+
+        var result = false;
+        HashSet<ListNode> visited = new HashSet<ListNode>();
 
         ListNode current = head;
 
         while (current != null)
         {
-            var nextNode = current.next;
-            current.next = null;
-
-            if (current.val < x)
+            if (visited.Contains(current))
             {
-                leftTail.next = current;
-                leftTail = current;
+                result = true;
+                break;
             }
-            else
-            {
-                rightTail.next = current;
-                rightTail = current;
-            }
-
-
-            current = nextNode;
+            visited.Add(current);
+            current = current.next;
         }
 
-        leftTail.next = rightList.next;
-
-        return leftList.next;
+        return result;
     }
 
     public class ListNode
@@ -61,16 +49,14 @@ internal class Program
 
     static void Main(string[] args)
     {
-        //[1,4,3,2,5,2]
-        ListNode head = new ListNode(1);
-        head.next = new ListNode(4);
-        head.next.next = new ListNode(3);
-        head.next.next.next = new ListNode(2);
-        head.next.next.next.next = new ListNode(5);
-        head.next.next.next.next.next = new ListNode(2);
+        //[3,2,0,-4]
+        ListNode head = new ListNode(3);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(0);
+        head.next.next.next = new ListNode(-4);
+        head.next.next.next.next = new ListNode(2);
 
-        var x = 3;
-        var res = Partition(head, x);
+        var res = HasCycle(head);
 
         Console.WriteLine(res);
     }
