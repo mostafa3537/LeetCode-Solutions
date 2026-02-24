@@ -7,29 +7,52 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int MySqrt(int x)
+    public static ListNode DeleteDuplicates(ListNode head)
     {
-        var result = 0;
-
-        var max = int.MaxValue;
-
-
-        for (long i = 0; i < max; i++)
+        if (head == null)
         {
-            if (i * i > x)
+            return head;
+        }
+        ListNode current = head;
+
+        while (current.next != null && head?.next.val != null)
+        {
+            if (current.val == current.next.val)
             {
-                return (int)i - 1;
+                current.next = current.next.next;
+            }
+            else
+            {
+                current = current.next;
             }
         }
 
-        return result;
+        return head;
+    }
+
+ 
+
+    public class ListNode
+    {
+        public int val;
+        public ListNode next;
+        public ListNode(int val = 0, ListNode next = null)
+        {
+            this.val = val;
+            this.next = next;
+        }
+ 
     }
 
     static void Main(string[] args)
     {
-        var target = 2147395600;
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(1);
+        head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(3);
+        head.next.next.next.next = new ListNode(3);
 
-        var res = MySqrt(target);
+        var res = DeleteDuplicates(head);
 
         Console.WriteLine(res);
     }
