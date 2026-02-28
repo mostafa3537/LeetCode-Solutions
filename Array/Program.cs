@@ -7,56 +7,65 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static bool HasCycle(ListNode head)
+    public static ListNode DetectCycle(ListNode head)
     {
         if (head == null)
         {
-            return false;
+            return null;
         }
 
-        // loop over stor the visited nodes in a hashset, if we see a node that is already in the hashset, then we have a cycle
+        var intersection = GetIntersection(head);
 
-        var result = false;
-        HashSet<ListNode> visited = new HashSet<ListNode>();
-
-        ListNode current = head;
-
-        while (current != null)
+        if (intersection == null)
         {
-            if (visited.Contains(current))
-            {
-                result = true;
-                break;
-            }
-            visited.Add(current);
-            current = current.next;
+            return null;
         }
 
-        return result;
+        while (intersection != head)
+        {
+            head = head.next;
+            intersection = intersection.next;
+ 
+        }
+
+        return head;
     }
 
-    public class ListNode
+    private static ListNode GetIntersection(ListNode head)
     {
-        public int val;
-        public ListNode next;
-        public ListNode(int val = 0, ListNode next = null)
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null)
         {
-            this.val = val;
-            this.next = next;
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (fast == slow)
+            {
+                return fast;
+            }
         }
 
+        return null;
     }
 
+    public class ListNode(int x)
+    {
+        public int val = x;
+        public ListNode next = null;
+    }
     static void Main(string[] args)
     {
         //[3,2,0,-4]
         ListNode head = new ListNode(3);
-        head.next = new ListNode(2);
+
+        var cy = head.next = new ListNode(2);
+
         head.next.next = new ListNode(0);
         head.next.next.next = new ListNode(-4);
-        head.next.next.next.next = new ListNode(2);
+        head.next.next.next.next = cy;
 
-        var res = HasCycle(head);
+        var res = DetectCycle(head);
 
         Console.WriteLine(res);
     }
