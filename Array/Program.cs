@@ -7,65 +7,44 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static ListNode DetectCycle(ListNode head)
+    public static int FindDuplicate(int[] nums)
     {
-        if (head == null)
-        {
-            return null;
-        }
+        var intersection = GetIntersection(nums);
 
-        var intersection = GetIntersection(head);
+        var head = 0;
 
-        if (intersection == null)
+        while (head != intersection)
         {
-            return null;
-        }
-
-        while (intersection != head)
-        {
-            head = head.next;
-            intersection = intersection.next;
- 
+            head = nums[head];
+            intersection = nums[intersection];
         }
 
         return head;
     }
 
-    private static ListNode GetIntersection(ListNode head)
+    private static int GetIntersection(int[] nums)
     {
-        ListNode slow = head;
-        ListNode fast = head;
-        while (fast != null && fast.next != null)
-        {
-            slow = slow.next;
-            fast = fast.next.next;
+        var slow = 0;
+        var fast = 0;
 
-            if (fast == slow)
+        while (true)
+        {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+
+            if (slow == fast)
             {
-                return fast;
+                return slow;
             }
         }
-
-        return null;
     }
 
-    public class ListNode(int x)
-    {
-        public int val = x;
-        public ListNode next = null;
-    }
+
     static void Main(string[] args)
     {
-        //[3,2,0,-4]
-        ListNode head = new ListNode(3);
+        var head = new int[] { 3, 1, 3, 4, 2 };
 
-        var cy = head.next = new ListNode(2);
-
-        head.next.next = new ListNode(0);
-        head.next.next.next = new ListNode(-4);
-        head.next.next.next.next = cy;
-
-        var res = DetectCycle(head);
+        var res = FindDuplicate(head);
 
         Console.WriteLine(res);
     }
