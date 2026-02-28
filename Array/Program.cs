@@ -7,44 +7,84 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int FindDuplicate(int[] nums)
+    public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
     {
-        var intersection = GetIntersection(nums);
 
-        var head = 0;
-
-        while (head != intersection)
+        if (list1 == null)
         {
-            head = nums[head];
-            intersection = nums[intersection];
+            return list2;
         }
-
-        return head;
-    }
-
-    private static int GetIntersection(int[] nums)
-    {
-        var slow = 0;
-        var fast = 0;
-
-        while (true)
+        if (list2 == null)
         {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
+            return list1;
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode head = dummy;
 
-            if (slow == fast)
+        var current1 = list1;
+        var current2 = list2;
+
+        while (current1 != null && current2 != null)
+        {
+            if (current1.val <= current2.val)
             {
-                return slow;
+                head.next = new ListNode(current1.val);
+                current1 = current1.next;
+
+
             }
+            else
+            {
+                head.next = new ListNode(current2.val);
+                current2 = current2.next;
+
+            }
+            head = head.next;
+        }
+
+        while (current1 != null)
+        {
+
+            head.next = new ListNode(current1.val);
+            head = head.next;
+            current1 = current1.next;
+
+        }
+
+        while (current1 != null)
+        {
+            head.next = new ListNode(current2.val);
+            head = head.next;
+            current2 = current2.next;
+        }
+
+        return dummy.next;
+    }
+ 
+
+    public class ListNode
+    {
+        public int val;
+        public ListNode next;
+        public ListNode(int val = 0, ListNode next = null)
+        {
+            this.val = val;
+            this.next = next;
         }
     }
-
 
     static void Main(string[] args)
     {
-        var head = new int[] { 3, 1, 3, 4, 2 };
+        //list1 = [1,2,4], list2 = [1,3,4]
+        ListNode list1 = new ListNode(1);
+        list1.next = new ListNode(2);
+        list1.next.next = new ListNode(4);
 
-        var res = FindDuplicate(head);
+        var list2 = new ListNode(1);
+        list2.next = new ListNode(3);
+        list2.next.next = new ListNode(4);
+
+        var res = MergeTwoLists(list1, list2);
 
         Console.WriteLine(res);
     }
