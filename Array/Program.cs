@@ -7,21 +7,51 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static IList<int> InorderTraversal(TreeNode root)
+    public static bool IsSymmetric(TreeNode root)
     {
-        var res = new List<int>();
+        var listLeft = new List<int?>();
+        DFSPreOrder(root.left, listLeft);
 
-        DFS(root, res);
+        var listRight = new List<int?>();
+        DFSPreOrderInvert(root.right, listRight);
 
-        return res;
+        if (listLeft.Count != listRight.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < listLeft.Count; i++)
+        {
+            if (listLeft[i] != listRight[i])
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private static void DFS(TreeNode node, List<int>? res)
+    private static void DFSPreOrder(TreeNode node, List<int?>? res)
     {
-        if (node == null) return;
-        DFS(node.left, res);
+        if (node == null) {
+            res.Add(null);
+            return;
+        }
         res.Add(node.val);
-        DFS(node.right, res);
+
+        DFSPreOrder(node.left, res);
+        DFSPreOrder(node.right, res);
+    }  
+    
+    private static void DFSPreOrderInvert(TreeNode node, List<int?>? res)
+    {
+        if (node == null){
+            res.Add(null);
+            return;
+        }
+        res.Add(node.val);
+
+        DFSPreOrderInvert(node.right, res);
+        DFSPreOrderInvert(node.left, res);
     }
 
 
@@ -40,13 +70,18 @@ internal class Program
 
     static void Main(string[] args)
     {
-        //list1 = [1,null,2,3] 
+        //list1 = [1,2,2,2,null,2] 
         TreeNode root = new TreeNode(1);
-        root.left = null;
+        root.left = new TreeNode(2);
         root.right = new TreeNode(2);
-        root.right.left = new TreeNode(3);
 
-        var res = InorderTraversal(root);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+
+        root.right.left = new TreeNode(4);
+        root.right.right = new TreeNode(3);
+
+        var res = IsSymmetric(root);
 
         Console.WriteLine(res);
     }
