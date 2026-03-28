@@ -7,54 +7,45 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static bool IsSymmetric(TreeNode root)
+    public static TreeNode InvertTree(TreeNode root)
     {
-        var listLeft = new List<int?>();
-        DFSPreOrder(root.left, listLeft);
+        var queue = new Queue<TreeNode>();
 
-        var listRight = new List<int?>();
-        DFSPreOrderInvert(root.right, listRight);
-
-        if (listLeft.Count != listRight.Count)
+        if (root != null)
         {
-            return false;
+            queue.Enqueue(root);
         }
 
-        for (int i = 0; i < listLeft.Count; i++)
+        while (queue.Count > 0)
         {
-            if (listLeft[i] != listRight[i])
+            var levelSize = queue.Count;
+
+            // loop through the current level and add the last node to the result
+            for (int i = 0; i < levelSize; i++)
             {
-                return false;
+                var current = queue.Dequeue();
+
+                TreeNode temp;
+
+                temp = current.left;
+                current.left = current.right;
+                current.right = temp;
+
+                if (current.left != null)
+                {
+                    queue.Enqueue(current.left);
+                }
+
+                if (current.right != null)
+                {
+                    queue.Enqueue(current.right);
+                }
             }
         }
-        return true;
+
+        return root;
+
     }
-
-    private static void DFSPreOrder(TreeNode node, List<int?>? res)
-    {
-        if (node == null) {
-            res.Add(null);
-            return;
-        }
-        res.Add(node.val);
-
-        DFSPreOrder(node.left, res);
-        DFSPreOrder(node.right, res);
-    }  
-    
-    private static void DFSPreOrderInvert(TreeNode node, List<int?>? res)
-    {
-        if (node == null){
-            res.Add(null);
-            return;
-        }
-        res.Add(node.val);
-
-        DFSPreOrderInvert(node.right, res);
-        DFSPreOrderInvert(node.left, res);
-    }
-
-
     public class TreeNode
     {
         public int val;
@@ -70,19 +61,20 @@ internal class Program
 
     static void Main(string[] args)
     {
-        //list1 = [1,2,2,2,null,2] 
-        TreeNode root = new TreeNode(1);
+        //list1 = [4,2,7,1,3,6,9] 
+        //list1 = [4,7,2,9,6,3,1]
+        TreeNode root = new TreeNode(4);
         root.left = new TreeNode(2);
-        root.right = new TreeNode(2);
+        root.right = new TreeNode(7);
 
-        root.left.left = new TreeNode(3);
-        root.left.right = new TreeNode(4);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(3);
 
-        root.right.left = new TreeNode(4);
-        root.right.right = new TreeNode(3);
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(9);
 
-        var res = IsSymmetric(root);
+        var x = InvertTree(root);
 
-        Console.WriteLine(res);
+        Console.WriteLine();
     }
 }
