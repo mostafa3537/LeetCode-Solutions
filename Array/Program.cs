@@ -11,6 +11,7 @@ internal class Program
     {
         var queue = new Queue<TreeNode>();
 
+        var result = new List<int>();
         if (root != null)
         {
             queue.Enqueue(root);
@@ -18,34 +19,42 @@ internal class Program
 
         while (queue.Count > 0)
         {
-            var levelSize = queue.Count;
+            var current = queue.Dequeue();
 
-            // loop through the current level and add the last node to the result
-            for (int i = 0; i < levelSize; i++)
+            if (current.left != null)
             {
-                var current = queue.Dequeue();
-
-                TreeNode temp;
-
-                temp = current.left;
-                current.left = current.right;
-                current.right = temp;
-
-                if (current.left != null)
-                {
-                    queue.Enqueue(current.left);
-                }
-
-                if (current.right != null)
-                {
-                    queue.Enqueue(current.right);
-                }
+                queue.Enqueue(current.left);
             }
+
+            if (current.right != null)
+            {
+                queue.Enqueue(current.right);
+            }
+
+            result.Add(current.val);
         }
 
-        return root;
+        result.Sort();
+
+
+        return BuildBalanced(result, 0, result.Count - 1);
 
     }
+
+
+    private static TreeNode BuildBalanced(List<int> arr, int left, int right)
+    {
+        if (left > right) return null;
+
+        int mid = left + (right - left) / 2;
+
+        var node = new TreeNode(arr[mid]);
+        node.left = BuildBalanced(arr, left, mid - 1);
+        node.right = BuildBalanced(arr, mid + 1, right);
+
+        return node;
+    }
+
     public class TreeNode
     {
         public int val;
