@@ -7,34 +7,55 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int MaxDepth(TreeNode root)
+    public static bool IsSameTree(TreeNode p, TreeNode q)
     {
-        int diameter = 0;
+        var result = true;
 
-        var stack = new Stack<(TreeNode, int)>();
-
-        if (root != null)
+        if (p == null && q == null)
         {
-            stack.Push((root, 1));
+            return true;
         }
 
-        while (stack.Count > 0)
-        {
-            var (node, depth) = stack.Pop();
+        var queue = new Queue<(TreeNode, TreeNode)>();
 
-            diameter = Math.Max(diameter, depth);
-            if (node.left != null)
+        if (p != null && q != null)
+        {
+            queue.Enqueue((p, q));
+        }
+        else
+        {
+            return false;
+        }
+
+        while (queue.Count > 0)
+        {
+            var currentNodes = queue.Dequeue();
+
+            if (currentNodes.Item1.val != currentNodes.Item2.val)
             {
-                stack.Push((node.left, depth+1));
-            }       
-            
-            if (node.right != null)
-            {
-                stack.Push((node.right, depth+1));
+                return false;
             }
 
+            if (currentNodes.Item1.left != null && currentNodes.Item2.left != null)
+            {
+                queue.Enqueue((currentNodes.Item1.left, currentNodes.Item2.left));
+            }
+            else if (currentNodes.Item1.left != null || currentNodes.Item2.left != null)
+            {
+                return false;
+            }
+
+            if (currentNodes.Item1.right != null && currentNodes.Item2.right != null)
+            {
+                queue.Enqueue((currentNodes.Item1.right, currentNodes.Item2.right));
+            }
+            else if (currentNodes.Item1.right != null || currentNodes.Item2.right != null)
+            {
+                return false;
+            }
         }
-        return diameter;
+
+        return result;
     }
 
 
@@ -61,7 +82,7 @@ internal class Program
         root.left.left = new TreeNode(4);
         root.left.right = new TreeNode(5);
 
-        var res = MaxDepth(root);
+        var res = IsSameTree(root, root);
 
         Console.WriteLine(res);
     }
