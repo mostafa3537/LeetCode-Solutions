@@ -7,26 +7,37 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int DiameterOfBinaryTree(TreeNode root)
+    public static int MaxDepth(TreeNode root)
     {
         int diameter = 0;
-        Depth(root, ref diameter);
+
+        var stack = new Stack<(TreeNode, int)>();
+
+        if (root != null)
+        {
+            stack.Push((root, 1));
+        }
+
+        while (stack.Count > 0)
+        {
+            var (node, depth) = stack.Pop();
+
+            diameter = Math.Max(diameter, depth);
+            if (node.left != null)
+            {
+                stack.Push((node.left, depth+1));
+            }       
+            
+            if (node.right != null)
+            {
+                stack.Push((node.right, depth+1));
+            }
+
+        }
         return diameter;
     }
 
-    private static int Depth(TreeNode node, ref int diameter)
-    {
-        if (node == null) return 0;
 
-        int left = Depth(node.left, ref diameter);
-        int right = Depth(node.right, ref diameter);
-
-        // update diameter (edges count)
-        diameter = Math.Max(diameter, left + right);
-
-        // return height
-        return Math.Max(left, right) + 1;
-    }
     public class TreeNode
     {
         public int val;
@@ -50,7 +61,7 @@ internal class Program
         root.left.left = new TreeNode(4);
         root.left.right = new TreeNode(5);
 
-        var res = DiameterOfBinaryTree(root);
+        var res = MaxDepth(root);
 
         Console.WriteLine(res);
     }
