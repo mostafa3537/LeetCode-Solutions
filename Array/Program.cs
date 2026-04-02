@@ -7,60 +7,41 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static bool IsHappy(int n)
+    public static int FindLHS(int[] nums)
     {
-        var dict = new Dictionary<string, int>();
+        var result = 0;
 
-        string resultNumber = n.ToString();
+        var dic = new Dictionary<int, int>();
 
-        if (resultNumber == "1")
+        for (int i = 0; i < nums.Length; i++)
         {
-            return true;
-        }
-
-        while (true)
-        {
-            resultNumber = Happy(resultNumber);
-
-            if (resultNumber == "1")
+            if (dic.TryGetValue(nums[i], out int val))
             {
-                return true;
+                dic[nums[i]]++;
             }
             else
             {
-                if (dict.ContainsKey(resultNumber))
-                {
-                    return false;
-
-                }
-                else
-                {
-                    dict.Add(resultNumber, 1);
-                }
-
+                dic.Add(nums[i], 1);
             }
         }
-    }
 
-    private static string Happy(string num)
-    {
-        var res = 0;
-
-        for (int i = 0; i < num.Length; i++)
+        foreach (var item in dic)
         {
-            var number = int.Parse(num[i].ToString());
-
-            res += number * number;
+            if (dic.TryGetValue(item.Key + 1, out int val))
+            {
+                result = Math.Max(result, item.Value + val);
+            }
         }
 
-        return res.ToString();
+        return result;
     }
+
+
     static void Main(string[] args)
     {
-        var list = 7;
+        var list = new int[] { 1, 3, 2, 2, 5, 2, 3, 7 };
 
-        var res = IsHappy(list);
-
+        var res = FindLHS(list);
         Console.WriteLine(res);
     }
 }
