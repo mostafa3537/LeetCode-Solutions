@@ -7,49 +7,30 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static char FindTheDifference(string s, string t)
+    public static bool FindTheDifference(string pattern, string s)
     {
-        var result = char.MinValue;
+        var result = false;
 
-        var dic = new Dictionary<char, int>();
+        var dic = new Dictionary<char, string>();
 
-        for (int i = 0; i < s.Length; i++)
+
+
+
+        for (int i = 0; i < pattern.Length; i++)
         {
-            if (dic.TryGetValue(s[i], out int val))
-            {
-                dic[s[i]]++;
-            }
-            else
-            {
-                dic[s[i]] = 1;
-            }
+            dic[i] = pattern[i];
         }
-
-        for (int i = 0; i < t.Length; i++)
-        {
-            if (dic.TryGetValue(t[i], out int val))
-            {
-                if (val == 0)
-                {
-                    return t[i];
-                }
-                dic[t[i]]--;
-            }
-            else
-            {
-                return t[i];
-            }
-        }
+        
         return result;
     }
 
 
     static void Main(string[] args)
     {
-        var s = "abcd";
-        var t = "abcde";
+        var pattern = "abba";
+        var t = "dog cat cat dog";
 
-        var res = FindTheDifference(s, t);
+        var res = FindTheDifference(pattern, t);
         Console.WriteLine(res);
     }
 }
