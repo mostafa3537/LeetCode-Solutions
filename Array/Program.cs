@@ -7,41 +7,49 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int FindLHS(int[] nums)
+    public static char FindTheDifference(string s, string t)
     {
-        var result = 0;
+        var result = char.MinValue;
 
-        var dic = new Dictionary<int, int>();
+        var dic = new Dictionary<char, int>();
 
-        for (int i = 0; i < nums.Length; i++)
+        for (int i = 0; i < s.Length; i++)
         {
-            if (dic.TryGetValue(nums[i], out int val))
+            if (dic.TryGetValue(s[i], out int val))
             {
-                dic[nums[i]]++;
+                dic[s[i]]++;
             }
             else
             {
-                dic.Add(nums[i], 1);
+                dic[s[i]] = 1;
             }
         }
 
-        foreach (var item in dic)
+        for (int i = 0; i < t.Length; i++)
         {
-            if (dic.TryGetValue(item.Key + 1, out int val))
+            if (dic.TryGetValue(t[i], out int val))
             {
-                result = Math.Max(result, item.Value + val);
+                if (val == 0)
+                {
+                    return t[i];
+                }
+                dic[t[i]]--;
+            }
+            else
+            {
+                return t[i];
             }
         }
-
         return result;
     }
 
 
     static void Main(string[] args)
     {
-        var list = new int[] { 1, 3, 2, 2, 5, 2, 3, 7 };
+        var s = "abcd";
+        var t = "abcde";
 
-        var res = FindLHS(list);
+        var res = FindTheDifference(s, t);
         Console.WriteLine(res);
     }
 }
