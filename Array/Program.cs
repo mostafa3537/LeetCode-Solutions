@@ -7,57 +7,59 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static int MajorityElement(int[] nums)
+    public static bool IsHappy(int n)
     {
-        var result = 0;
+        var dict = new Dictionary<string, int>();
 
-        var limit = nums.Length / 2;
+        string resultNumber = n.ToString();
 
-
-        var dict = new Dictionary<int, int>();
-
-        for (int i = 0; i < nums.Length; i++)
+        if (resultNumber == "1")
         {
-            if (dict.TryGetValue(nums[i], out int val))
+            return true;
+        }
+
+        while (true)
+        {
+            resultNumber = Happy(resultNumber);
+
+            if (resultNumber == "1")
             {
-                dict[nums[i]] = val + 1;
+                return true;
             }
             else
             {
-                dict[nums[i]] = 1;
+                if (dict.ContainsKey(resultNumber))
+                {
+                    return false;
+
+                }
+                else
+                {
+                    dict.Add(resultNumber, 1);
+                }
+
             }
         }
-
-        dict.Keys.ToList().ForEach(key =>
-        {
-            if (dict[key] > limit)
-            {
-                result = key;
-            }
-        });
-
-        return result;
     }
 
-
-    public class TreeNode
+    private static string Happy(string num)
     {
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
-        {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
+        var res = 0;
 
+        for (int i = 0; i < num.Length; i++)
+        {
+            var number = int.Parse(num[i].ToString());
+
+            res += number * number;
+        }
+
+        return res.ToString();
+    }
     static void Main(string[] args)
     {
-        var list = new int[] { 2, 2, 1, 1, 1, 2, 2 };
+        var list = 7;
 
-        var res = MajorityElement(list);
+        var res = IsHappy(list);
 
         Console.WriteLine(res);
     }
