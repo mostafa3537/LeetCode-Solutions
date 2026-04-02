@@ -7,53 +7,34 @@ using System.Xml.Linq;
 
 internal class Program
 {
-    public static bool IsSameTree(TreeNode p, TreeNode q)
+    public static int MajorityElement(int[] nums)
     {
-        var result = true;
+        var result = 0;
 
-        if (p == null && q == null)
+        var limit = nums.Length / 2;
+
+
+        var dict = new Dictionary<int, int>();
+
+        for (int i = 0; i < nums.Length; i++)
         {
-            return true;
+            if (dict.TryGetValue(nums[i], out int val))
+            {
+                dict[nums[i]] = val + 1;
+            }
+            else
+            {
+                dict[nums[i]] = 1;
+            }
         }
 
-        var queue = new Queue<(TreeNode, TreeNode)>();
-
-        if (p != null && q != null)
+        dict.Keys.ToList().ForEach(key =>
         {
-            queue.Enqueue((p, q));
-        }
-        else
-        {
-            return false;
-        }
-
-        while (queue.Count > 0)
-        {
-            var currentNodes = queue.Dequeue();
-
-            if (currentNodes.Item1.val != currentNodes.Item2.val)
+            if (dict[key] > limit)
             {
-                return false;
+                result = key;
             }
-
-            if (currentNodes.Item1.left != null && currentNodes.Item2.left != null)
-            {
-                queue.Enqueue((currentNodes.Item1.left, currentNodes.Item2.left));
-            }
-            else if (currentNodes.Item1.left != null || currentNodes.Item2.left != null)
-            {
-                return false;
-            }
-
-            if (currentNodes.Item1.right != null && currentNodes.Item2.right != null)
-            {
-                queue.Enqueue((currentNodes.Item1.right, currentNodes.Item2.right));
-            }
-            else if (currentNodes.Item1.right != null || currentNodes.Item2.right != null)
-            {
-                return false;
-            }
-        }
+        });
 
         return result;
     }
@@ -74,15 +55,9 @@ internal class Program
 
     static void Main(string[] args)
     {
-        //list1 = [1,2,3,4,5]
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
+        var list = new int[] { 2, 2, 1, 1, 1, 2, 2 };
 
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
-
-        var res = IsSameTree(root, root);
+        var res = MajorityElement(list);
 
         Console.WriteLine(res);
     }
