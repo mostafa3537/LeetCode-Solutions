@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Problems.BinaryTree;
 
-namespace Problems.BinaryTreeProblems
+namespace Problems.BinaryTree
 {
     internal class SortedArrayToBSTProblem
     {
