@@ -1,102 +1,59 @@
-﻿namespace Problems;
+﻿
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.ConstrainedExecution;
-using System.Xml.Linq;
-using Problems.BinaryTree;
-using static System.Net.Mime.MediaTypeNames;
+namespace Problems;
 
 internal class Program
 {
 
-    public class LRUCache
-    {
-        public class Key
-        {
-            public int Value { get; set; }
-            public int keyValue { get; set; }
+	public static bool IsSubtree(TreeNode root, TreeNode subRoot)
+	{
+		if (root == null && subRoot == null)
+		{
+			return true;
+		}
+		if (root == null || subRoot == null)
+		{
+			return false;
+		}
 
-            public Key(int value, int keyValue)
-            {
-                Value = value;
-                this.keyValue = keyValue;
-            }
-        }
-        private int _capacity;
+		if (root.val == subRoot.val)
+		{
+			return true;
+		}
+		return IsSubtree(root.left, subRoot.left) ||
+			IsSubtree(root.right, subRoot.right);
+	}
+	public class TreeNode
+	{
+		public int val;
+		public TreeNode left;
+		public TreeNode right;
+		public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+		{
+			this.val = val;
+			this.left = left;
+			this.right = right;
+		}
+	}
+	static void Main(string[] args)
+	{
+		//root = [3, 4, 5, 1, 2], subRoot = [4, 1, 2]
+		var root = new TreeNode(3);
 
-        private Dictionary<int, LinkedListNode<Key>> _cache = new Dictionary<int, LinkedListNode<Key>>();
+		root.left = new TreeNode(4);
+		root.right = new TreeNode(5);
 
-        private LinkedList<Key> _usageOrder = new LinkedList<Key>();
+		root.left.left = new TreeNode(1);
+		root.left.right = new TreeNode(2);
 
-        public LRUCache(int capacity)
-        {
-            _capacity = capacity;
-        }
+		root.right = new TreeNode(5);
 
-        public int Get(int key)
-        {
-            if (_cache.TryGetValue(key, out LinkedListNode<Key>? node))
-            {
-                // Update the usage order
-                _usageOrder.Remove(node);
-                _usageOrder.AddLast(node);
+		var subRoot = new TreeNode(4);
 
-                return node.Value.Value;
-            }
-            return -1;
-        }
+		subRoot.left = new TreeNode(1);
+		subRoot.right = new TreeNode(2);
 
-        public void Put(int key, int value)
-        {
-            if (_cache.TryGetValue(key, out LinkedListNode<Key>? node))
-            {
-                node.Value.Value = value;
-
-                // Update the usage order
-                _usageOrder.Remove(node);
-                _usageOrder.AddLast(node);
-
-                return;
-            }
-            else // New key
-            {
-                var keyObj = new Key(value, key);
-                var newNode = new LinkedListNode<Key>(keyObj);
-
-                if (_capacity >= _cache.Count) // Still have space adding new key
-                {
-                    _cache.Add(key, newNode);
-                    _usageOrder.AddLast(newNode);
-
-                }
-                else // Cache is full, need to remove least used key before adding new key
-                {
-                    RemoveLeastUsed();
-                    _cache.Add(key, newNode);
-                    _usageOrder.AddLast(newNode);
-
-                }
-            }
-        }
-
-        private void RemoveLeastUsed()
-        {
-            var leastUsedNode = _usageOrder.First;
-            if (leastUsedNode != null)
-            {
-                _cache.Remove(leastUsedNode.Value.keyValue);
-                _usageOrder.RemoveFirst();
-            }
-        }
-    }
-    static void Main(string[] args)
-    {
-        var nums = 38;
-
-        //var res = SortedArrayToBST(nums);
-        Console.WriteLine();
-    }
+		var res = IsSubtree(root, subRoot);
+		Console.WriteLine(res);
+	}
 }
