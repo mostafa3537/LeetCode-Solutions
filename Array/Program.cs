@@ -16,12 +16,31 @@ internal class Program
 			return false;
 		}
 
-		if (root.val == subRoot.val)
+		if (IsSame(root, subRoot))
 		{
 			return true;
 		}
-		return IsSubtree(root.left, subRoot.left) ||
-			IsSubtree(root.right, subRoot.right);
+
+		return IsSubtree(root.left, subRoot) ||
+			IsSubtree(root.right, subRoot);
+	}
+	public static bool IsSame(TreeNode root, TreeNode subRoot)
+	{
+		if (root == null && subRoot == null)
+		{
+			return true;
+		}
+		if (root == null || subRoot == null)
+		{
+			return false;
+		}
+
+		if (root.val != subRoot.val)
+		{
+			return false;
+		}
+		return IsSame(root.left, subRoot.left) &&
+			IsSame(root.right, subRoot.right);
 	}
 	public class TreeNode
 	{
