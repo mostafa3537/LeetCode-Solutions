@@ -12,91 +12,97 @@ using static System.Net.Mime.MediaTypeNames;
 internal class Program
 {
 
-    public class LRUCache
+    public TreeNode BuildTree(int[] preorder, int[] inorder)
     {
-        public class Key
+        var tree = new TreeNode();
+
+        if (preorder.Length < 1 || inorder.Length < 1)
         {
-            public int Value { get; set; }
-            public int keyValue { get; set; }
-
-            public Key(int value, int keyValue)
-            {
-                Value = value;
-                this.keyValue = keyValue;
-            }
-        }
-        private int _capacity;
-
-        private Dictionary<int, LinkedListNode<Key>> _cache = new Dictionary<int, LinkedListNode<Key>>();
-
-        private LinkedList<Key> _usageOrder = new LinkedList<Key>();
-
-        public LRUCache(int capacity)
-        {
-            _capacity = capacity;
+            return tree;
         }
 
-        public int Get(int key)
-        {
-            if (_cache.TryGetValue(key, out LinkedListNode<Key>? node))
-            {
-                // Update the usage order
-                _usageOrder.Remove(node);
-                _usageOrder.AddLast(node);
+        Build(tree, preorder, inorder);
 
-                return node.Value.Value;
-            }
-            return -1;
+        return tree;
+    }
+
+    private static void Build(TreeNode tree, int[] preorder, int[] inorder)
+    {
+        var rootValue = preorder.First();
+
+        tree.val = rootValue;
+
+        var rootIndexInorder = Array.IndexOf(inorder, rootValue);
+
+        var leftInorder = inorder.Take(rootIndexInorder).ToArray();
+        var rightInorder = inorder.Skip(rootIndexInorder + 1).ToArray();
+
+        var leftPreorder = preorder.Skip(1).Take(leftInorder.Length).ToArray();
+        var rightPreorder = preorder.Skip(1 + leftInorder.Length).ToArray();
+
+        if (leftPreorder.Length > 0)
+        {
+            tree.left = new TreeNode();
+            Build(tree.left, leftPreorder, leftInorder);
         }
 
-        public void Put(int key, int value)
+        if (rightPreorder.Length > 0)
         {
-            if (_cache.TryGetValue(key, out LinkedListNode<Key>? node))
-            {
-                node.Value.Value = value;
-
-                // Update the usage order
-                _usageOrder.Remove(node);
-                _usageOrder.AddLast(node);
-
-                return;
-            }
-            else // New key
-            {
-                var keyObj = new Key(value, key);
-                var newNode = new LinkedListNode<Key>(keyObj);
-
-                if (_capacity >= _cache.Count) // Still have space adding new key
-                {
-                    _cache.Add(key, newNode);
-                    _usageOrder.AddLast(newNode);
-
-                }
-                else // Cache is full, need to remove least used key before adding new key
-                {
-                    RemoveLeastUsed();
-                    _cache.Add(key, newNode);
-                    _usageOrder.AddLast(newNode);
-
-                }
-            }
+            tree.right = new TreeNode();
+            Build(tree.right, rightPreorder, rightInorder);
         }
 
-        private void RemoveLeastUsed()
+    }
+    public static List<int> Pre(TreeNode tree)
+    {
+        var res = new List<int>();
+
+        PreOrder(tree, res);
+
+        return res;
+    }
+
+
+    public static void PreOrder(TreeNode tree, List<int> res)
+    {
+        if (tree == null)
         {
-            var leastUsedNode = _usageOrder.First;
-            if (leastUsedNode != null)
-            {
-                _cache.Remove(leastUsedNode.Value.keyValue);
-                _usageOrder.RemoveFirst();
-            }
+            return;
+        }
+
+        res.Add(tree.val);
+
+        PreOrder(tree.left, res);
+        PreOrder(tree.right, res);
+
+    }
+
+    public class TreeNode
+    {
+        public int val;
+        public TreeNode left;
+        public TreeNode right;
+        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+        {
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
     }
+
     static void Main(string[] args)
     {
-        var nums = 38;
+        //[3,9,20,null,null,15,7]
+        TreeNode tree = new(3);
 
-        //var res = SortedArrayToBST(nums);
+        tree.left = new(9);
+        tree.right = new(20);
+
+
+        tree.right.left = new(15);
+        tree.right.right = new(7);
+
+        var res = Pre(tree);
         Console.WriteLine();
     }
 }
