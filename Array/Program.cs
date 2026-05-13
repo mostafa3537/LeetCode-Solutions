@@ -6,62 +6,25 @@ using System.Collections.Generic;
 
 internal class Program
 {
-	public class RandomizedSet
+	public static int[] BuildArray(int[] nums)
 	{
-		public Dictionary<int, int> KeyValues { get; set; }
+		var result = new int[nums.Length];
 
-		public RandomizedSet()
+		for (int i = 0; i < nums.Length; i++)
 		{
-			KeyValues = new Dictionary<int, int>();
+			var itemToPush = nums[nums[i]];
+
+			result[i] = itemToPush;
 		}
 
-		public bool Insert(int val)
-		{
-
-			if (KeyValues.ContainsKey(val)) 
-			{
-				return false;
-			}
-			else
-			{
-				KeyValues.Add(val, val);
-				return true;
-			}
-		}
-
-		public bool Remove(int val)
-		{
-			if (KeyValues.TryGetValue(val, out int val2))
-			{
-				KeyValues.Remove(val);
-
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-
-		}
-
-		public int GetRandom()
-		{
-			var random = new Random();
-
-			int value = random.Next(0, KeyValues.Count);
-
-			return KeyValues.ElementAt(value).Value;
-		}
+		return result;
 	}
 
 	static void Main(string[] args)
 	{
-		RandomizedSet obj = new RandomizedSet();
-		bool param_1 = obj.Insert(1);
-		bool param_2 = obj.Remove(2);
-		int param_3 = obj.GetRandom();
-
-
-		Console.WriteLine();
+		var input = new int[] { 0, 2, 1, 5, 3, 4 };
+		var result = BuildArray(input);
+ 
+		Console.WriteLine(result);
 	}
 }
